@@ -24,12 +24,20 @@ public class SoundConverter : MonoBehaviour {
     [SerializeField]
     private Vector3 tempPos;
 
+    [SerializeField]
+    float waveUpdate;
 
-    bool freq1Bool;
-    bool freq2Bool;
-    bool freq3Bool;
-    bool freq4Bool;
-    bool freq5Bool;
+    [SerializeField]
+    Color freq1Color;
+    [SerializeField]
+    Color freq2Color;
+    [SerializeField]
+    Color freq3Color;
+    [SerializeField]
+    Color freq4Color;
+    [SerializeField]
+    Color freq5Color;
+
 
     Transform freq1Parent;
     Transform freq2Parent;
@@ -46,7 +54,7 @@ public class SoundConverter : MonoBehaviour {
     /// Analysis the sound and gets the 5 frequenties we want
     /// </summary>
     /// <returns>Array of frequenties</returns>
-    float[] Analyse()
+    public float[] Analyse()
     {
         /*
          * 22050 / array length = i;
@@ -114,14 +122,17 @@ public class SoundConverter : MonoBehaviour {
 
         if (freqs[0] > freq1Trigger)
         {
-            offSet = -5;
-            GameObject waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + intens[0] + offSet, wavePos.z), Quaternion.identity);
-            waveObj.GetComponent<MeshRenderer>().material.color = Color.black;
-            freq1Bool = true;
+            StopCoroutine(ParentNuller(1));
+            offSet = -1;
+            GameObject waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + intens[0] / 10 + offSet, wavePos.z), Quaternion.identity);
+            waveObj.GetComponent<MeshRenderer>().material.color = freq1Color;
+            waveObj.GetComponent<Light>().color = freq1Color;
+            waveObj.tag = "freq1";
 
             if (freq1Parent != null)
             {
                 waveObj.transform.parent = freq1Parent;
+                waveObj.transform.position = new Vector3(freq1Parent.position.x - 0.1f, waveObj.transform.position.y, waveObj.transform.position.z);
                 freq1Parent = waveObj.transform;
             }
             else
@@ -132,21 +143,26 @@ public class SoundConverter : MonoBehaviour {
         }
         else
         {
-            freq1Bool = false;
-            freq1Parent = null;
+            StartCoroutine(ParentNuller(1));
         }
+
 
         if (freqs[1] > freq2Trigger)
         {
-            offSet = -2.5f;
-            GameObject waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + intens[1] + offSet, wavePos.z), Quaternion.identity);
-            waveObj.GetComponent<MeshRenderer>().material.color = Color.blue;
-            freq2Bool = true;
+            StopCoroutine(ParentNuller(2));
+            offSet = -0.5f;
+            GameObject waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + intens[1] / 10 + offSet, wavePos.z), Quaternion.identity);
+            waveObj.GetComponent<MeshRenderer>().material.color = freq2Color;
+            waveObj.GetComponent<Light>().color = freq2Color;
+            waveObj.tag = "freq2";
 
             if (freq2Parent != null)
             {
+                Debug.Log("set wave");
                 waveObj.transform.parent = freq2Parent;
+                waveObj.transform.position = new Vector3(freq2Parent.position.x - 0.1f, waveObj.transform.position.y, waveObj.transform.position.z);
                 freq2Parent = waveObj.transform;
+                Debug.Log(freq2Parent);
             }
             else
             {
@@ -155,20 +171,23 @@ public class SoundConverter : MonoBehaviour {
         }
         else
         {
-            freq2Bool = false;
-            freq2Parent = null;
+            StartCoroutine(ParentNuller(2));
         }
+
 
         if (freqs[2] > freq3Trigger)
         {
+            StopCoroutine(ParentNuller(3));
             offSet = 0;
-            GameObject waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + intens[2] + offSet, wavePos.z), Quaternion.identity);
-            waveObj.GetComponent<MeshRenderer>().material.color = Color.yellow;
-            freq3Bool = true;
+            GameObject waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + intens[2] / 10 + offSet, wavePos.z), Quaternion.identity);
+            waveObj.GetComponent<MeshRenderer>().material.color = freq3Color;
+            waveObj.GetComponent<Light>().color = freq3Color;
+            waveObj.tag = "freq3";
 
             if (freq3Parent != null)
             {
                 waveObj.transform.parent = freq3Parent;
+                waveObj.transform.position = new Vector3(freq3Parent.position.x - 0.1f, waveObj.transform.position.y, waveObj.transform.position.z);
                 freq3Parent = waveObj.transform;
             }
             else
@@ -178,20 +197,23 @@ public class SoundConverter : MonoBehaviour {
         }
         else
         {
-            freq3Bool = false;
-            freq3Parent = null;
+            StartCoroutine(ParentNuller(3));
         }
+
 
         if (freqs[3] > freq4Trigger)
         {
-            offSet = 2.5f;
-            GameObject waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + intens[3] + offSet, wavePos.z), Quaternion.identity);
-            waveObj.GetComponent<MeshRenderer>().material.color = Color.green;
-            freq4Bool = true;
+            StopCoroutine(ParentNuller(4));
+            offSet = 0.5f;
+            GameObject waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + intens[3] / 10 + offSet, wavePos.z), Quaternion.identity);
+            waveObj.GetComponent<MeshRenderer>().material.color = freq4Color;
+            waveObj.GetComponent<Light>().color = freq4Color;
+            waveObj.tag = "freq4";
 
             if (freq4Parent != null)
             {
                 waveObj.transform.parent = freq4Parent;
+                waveObj.transform.position = new Vector3(freq4Parent.position.x - 0.1f, waveObj.transform.position.y, waveObj.transform.position.z);
                 freq4Parent = waveObj.transform;
             }
             else
@@ -201,20 +223,23 @@ public class SoundConverter : MonoBehaviour {
         }
         else
         {
-            freq4Bool = false;
-            freq4Parent = null;
+            StartCoroutine(ParentNuller(4));
         }
+
 
         if (freqs[4] > freq5Trigger)
         {
-            offSet = 5;
-            GameObject waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + intens[4] + offSet, wavePos.z), Quaternion.identity);
-            waveObj.GetComponent<MeshRenderer>().material.color = Color.red;
-            freq5Bool = true;
+            StopCoroutine(ParentNuller(5));
+            offSet = 1;
+            GameObject waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + intens[4] / 10+ offSet, wavePos.z), Quaternion.identity);
+            waveObj.GetComponent<MeshRenderer>().material.color = freq5Color;
+            waveObj.GetComponent<Light>().color = freq5Color;
+            waveObj.tag = "freq5";
 
             if (freq5Parent != null)
             {
                 waveObj.transform.parent = freq5Parent;
+                waveObj.transform.position = new Vector3(freq5Parent.position.x - 0.1f, waveObj.transform.position.y, waveObj.transform.position.z);
                 freq5Parent = waveObj.transform;
             }
             else
@@ -224,19 +249,44 @@ public class SoundConverter : MonoBehaviour {
         }
         else
         {
-            freq5Bool = false;
-            freq5Parent = null;
+            StartCoroutine(ParentNuller(5));
         }
     }
 
     void Update()
     {
+        WaveTrigger(waveObject, tempPos);
+    }
+
+    IEnumerator ParentNuller(int freq)
+    {
+        yield return new WaitForSeconds(1f);
+
+        switch(freq)
+        {
+            case 1:
+                freq1Parent = null;
+                break;
+            case 2:
+                freq2Parent = null;
+                break;
+            case 3:
+                freq3Parent = null;
+                break;
+            case 4:
+                freq4Parent = null;
+                break;
+            case 5:
+                freq5Parent = null;
+                break;
+        }
+        
     }
 
     IEnumerator SpawnWave()
     {
-        yield return new WaitForSeconds(0.05f);
-        WaveTrigger(waveObject, tempPos);
+        yield return new WaitForSeconds(waveUpdate);
+        //WaveTrigger(waveObject, tempPos);
         StartCoroutine(SpawnWave());
     }
 }
