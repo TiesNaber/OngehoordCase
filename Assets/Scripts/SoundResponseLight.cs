@@ -20,7 +20,8 @@ public class SoundResponseLight : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        GlowOnBeat();
+        if(transform.parent == null)
+            GlowOnBeat();
 	}
 
     /// <summary>

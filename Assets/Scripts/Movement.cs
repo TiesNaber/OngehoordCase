@@ -12,17 +12,35 @@ public class Movement : MonoBehaviour {
     float wiggleMove;
     [SerializeField]
     float speed;
+    [SerializeField]
+    GameObject particles;
+
+    public int myFreq;
+
+    SoundConverter soundCon;
 
 	// Use this for initialization
 	void Start () {
         startTime = Time.time;
         startY = this.transform.position.y;
         StartCoroutine(DestroyLoner());
+        soundCon = GameObject.Find("GameManager").GetComponent<SoundConverter>();
 	}
 
     void OnTriggerEnter(Collider col)
     {
-        if (col.tag == "EarDrum" || col.tag == "GameController")
+        if (col.tag == "GameController")
+        {
+            if (transform.childCount != 0)
+            {
+                transform.GetChild(0).parent = null;
+            }
+            GameObject particle = (GameObject)Instantiate(particles, transform.position, Quaternion.Euler(0, 90, 0));
+            particle.GetComponent<ParticleSystem>().startColor = GetComponent<MeshRenderer>().material.color;
+            col.GetComponent<ControllerScript>().HapticFeedback();
+            Destroy(gameObject);
+        }
+        if (col.tag == "EarDrum")
         {
             if (transform.childCount != 0)
             {
@@ -38,7 +56,9 @@ public class Movement : MonoBehaviour {
         if(transform.parent == null)
             transform.Translate(new Vector3(speed * Time.deltaTime, 0, 0));
 
-        float yMov = Mathf.Sin((Time.time - startTime) * wiggleTime) * wiggleMove;
+        float[] freqs = soundCon.Analyse();
+
+        float yMov = Mathf.Sin((Time.time - startTime) * wiggleTime) * (wiggleMove + freqs[myFreq - 1] / 2);
         transform.position = new Vector3(transform.position.x, startY + yMov, transform.position.z);
 	}
 
