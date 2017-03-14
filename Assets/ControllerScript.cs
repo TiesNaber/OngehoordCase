@@ -13,7 +13,7 @@ public class ControllerScript : MonoBehaviour {
 
     [SerializeField]
     [Range(1000, 8000)]
-    private int vibrate = 2000;
+    private ushort vibrate = 2000;
 
     void Awake()
     {
@@ -23,7 +23,7 @@ public class ControllerScript : MonoBehaviour {
     public void HapticFeedback()
     {
         Debug.Log("Vibrate");
-        Controller.TriggerHapticPulse(2000, EVRButtonId.k_EButton_Axis0);
+        Controller.TriggerHapticPulse(vibrate, EVRButtonId.k_EButton_Axis0);
     }
 
     public bool TriggerDown()
