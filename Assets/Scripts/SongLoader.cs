@@ -5,7 +5,7 @@ using UnityEngine;
 public class SongLoader : MonoBehaviour {
 
     [SerializeField]
-    float radius = 10;
+    float radius;
     [SerializeField]
     Transform player;
     [SerializeField]
@@ -18,6 +18,7 @@ public class SongLoader : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         songs = Resources.LoadAll("Songs");
+        radius = songs.Length;
 
         DrawCircle();
 	}
@@ -32,8 +33,6 @@ public class SongLoader : MonoBehaviour {
     /// </summary>
     void DrawCircle()
     {
-        float rotation = 360 / songs.Length;
-
         for (int i = 0; i < songs.Length; i++)
         {
             float angle = i * Mathf.PI * 2 / songs.Length;

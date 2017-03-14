@@ -14,11 +14,6 @@ public class ControllerScript : MonoBehaviour {
     [SerializeField]
     [Range(1000, 8000)]
     private int vibrate = 2000;
-        
-
-     
-    
-
 
     void Awake()
     {
@@ -27,8 +22,14 @@ public class ControllerScript : MonoBehaviour {
 
     public void HapticFeedback()
     {
-        Debug.Log("VIBRATE");
+        Debug.Log("Vibrate");
         Controller.TriggerHapticPulse(2000, EVRButtonId.k_EButton_Axis0);
+    }
+
+    public bool TriggerDown()
+    {
+        Debug.Log("Trigger Pressed");
+        return Controller.GetPress(EVRButtonId.k_EButton_SteamVR_Trigger);
     }
 	
 	// Update is called once per frame
