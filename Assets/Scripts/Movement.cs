@@ -27,6 +27,10 @@ public class Movement : MonoBehaviour {
         soundCon = GameObject.Find("GameManager").GetComponent<SoundConverter>();
 	}
 
+    /// <summary>
+    /// Collision checker
+    /// </summary>
+    /// <param name="col"></param>
     void OnTriggerEnter(Collider col)
     {
         if (col.tag == "GameController")
@@ -47,6 +51,7 @@ public class Movement : MonoBehaviour {
                 transform.GetChild(0).parent = null;
             }
             GameObject.Find("HearingDamagaeTempHolder").transform.FindChild(this.tag).GetComponent<HearingDamage>().GetDamage();
+            soundCon.powerUpInScene = false;
             Destroy(gameObject);
         }
     }
@@ -58,7 +63,7 @@ public class Movement : MonoBehaviour {
 
         float[] freqs = soundCon.Analyse();
 
-        float yMov = Mathf.Sin((Time.time - startTime) * wiggleTime) * (wiggleMove + freqs[myFreq - 1] / 2);
+        float yMov = Mathf.Sin((Time.time - startTime) * wiggleTime) * (wiggleMove + freqs[myFreq] / 4);
         transform.position = new Vector3(transform.position.x, startY + yMov, transform.position.z);
 	}
 
@@ -72,6 +77,11 @@ public class Movement : MonoBehaviour {
 
         if (transform.parent == null && transform.childCount == 0)
         {
+            Destroy(gameObject);
+        }
+        else  if(transform.childCount == 1 && transform.GetChild(0).tag == "PowerUp")
+        {
+            soundCon.powerUpInScene = false;
             Destroy(gameObject);
         }
     }
