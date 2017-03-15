@@ -27,16 +27,24 @@ public class ScoreScript : MonoBehaviour {
         scoreText.text = score.ToString();
     }
 
+    /// <summary>
+    /// Update the score
+    /// </summary>
+    /// <param name="points">Amount of points to add</param>
     public void UpdateScore(int points)
     {
         score += points;  
     }
 
-    public void UpdateHearingDamage(float damage)
+    /// <summary>
+    /// Update the hearing damage
+    /// </summary>
+    /// <param name="damage">Amount of damage to add</param>
+    public void UpdateHearingDamage(int damage)
     {
         hearing -= damage;
-        percentage.text = (int)hearing + "%"; 
-        damageBar.transform.localScale = new Vector3(0.003f * hearing, 0.2f, 1);
-        Debug.Log((100 / hearing) * 0.3f);
+        percentage.text = hearing + "%"; 
+        damageBar.transform.localScale = new Vector3(hearing / 100, 0.1f, 1);
+        Debug.Log(hearing / 100);
     }
 }
