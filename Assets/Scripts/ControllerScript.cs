@@ -36,18 +36,4 @@ public class ControllerScript : MonoBehaviour {
 	void Update () {
 		
 	}
-
-    void OnTriggerStay(Collider col)
-    {
-        if(col.tag == "EarPlug" && TriggerDown())
-        {
-            col.GetComponent<Rigidbody>().isKinematic = true;
-            col.transform.parent = transform; 
-        }
-        else if(!TriggerDown())
-        {
-            col.GetComponent<Rigidbody>().isKinematic = false;
-            col.transform.parent = null;
-        }
-    }
 }

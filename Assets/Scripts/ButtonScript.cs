@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 using UnityEngine;
 
 public class ButtonScript : MonoBehaviour {
@@ -8,6 +9,7 @@ public class ButtonScript : MonoBehaviour {
     public float originPos;
     public float hoverDis;
     bool seeing = false;
+    public Text songName;
 
     
    
@@ -15,8 +17,7 @@ public class ButtonScript : MonoBehaviour {
 
 
     AudioSource audio;
-    [SerializeField]
-    AudioSource[] songs = new AudioSource[2];
+
    
 
 
@@ -45,6 +46,8 @@ public class ButtonScript : MonoBehaviour {
                 audio = lookAt.collider.GetComponent<AudioSource>();
                 audio.time = 30;
                 audio.Play();
+                Debug.Log(audio.clip);
+                songName.text = "Song: " + audio.clip;
                 Debug.Log("Looking");
                                 
 
