@@ -14,18 +14,17 @@ public class Movement : MonoBehaviour {
     float speed;
     [SerializeField]
     GameObject particles;
-    public bool hasPowerUp = false;
 
     public int myFreq;
 
-    GameObject gameManager;
+    SoundConverter soundCon;
 
 	// Use this for initialization
 	void Start () {
         startTime = Time.time;
         startY = this.transform.position.y;
         StartCoroutine(DestroyLoner());
-        gameManager = GameObject.Find("GameManager");
+        soundCon = GameObject.Find("GameManager").GetComponent<SoundConverter>();
 	}
 
     /// <summary>
@@ -42,12 +41,7 @@ public class Movement : MonoBehaviour {
             }
             GameObject particle = (GameObject)Instantiate(particles, transform.position, Quaternion.Euler(0, 90, 0));
             particle.GetComponent<ParticleSystem>().startColor = GetComponent<MeshRenderer>().material.color;
-            //col.GetComponent<ControllerScript>().HapticFeedback();
-            gameManager.GetComponent<ScoreScript>().UpdateScore(1);
-
-            if (transform.childCount > 0 && transform.GetChild(0).name == "PowerUp(Clone)")
-                Destroy(transform.GetChild(0).gameObject);
-
+            col.GetComponent<ControllerScript>().HapticFeedback();
             Destroy(gameObject);
         }
         if (col.tag == "EarDrum")
@@ -57,9 +51,7 @@ public class Movement : MonoBehaviour {
                 transform.GetChild(0).parent = null;
             }
             GameObject.Find("HearingDamagaeTempHolder").transform.FindChild(this.tag).GetComponent<HearingDamage>().GetDamage();
-
-            gameManager.GetComponent<SoundConverter>().powerUpInScene = false;
-            gameManager.GetComponent<ScoreScript>().UpdateHearingDamage(1);
+            soundCon.powerUpInScene = false;
             Destroy(gameObject);
         }
     }
@@ -69,7 +61,7 @@ public class Movement : MonoBehaviour {
         if(transform.parent == null)
             transform.Translate(new Vector3(speed * Time.deltaTime, 0, 0));
 
-        float[] freqs = gameManager.GetComponent<SoundConverter>().Analyse();
+        float[] freqs = soundCon.Analyse();
 
         float yMov = Mathf.Sin((Time.time - startTime) * wiggleTime) * (wiggleMove + freqs[myFreq] / 4);
         transform.position = new Vector3(transform.position.x, startY + yMov, transform.position.z);
@@ -89,7 +81,7 @@ public class Movement : MonoBehaviour {
         }
         else  if(transform.childCount == 1 && transform.GetChild(0).tag == "PowerUp")
         {
-            gameManager.GetComponent<SoundConverter>().powerUpInScene = false;
+            soundCon.powerUpInScene = false;
             Destroy(gameObject);
         }
     }

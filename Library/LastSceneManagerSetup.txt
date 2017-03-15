@@ -1,4 +1,12 @@
 sceneSetups:
+<<<<<<< HEAD
+- path: Assets/Scenes/SongSelectionDemo.unity
+=======
+<<<<<<< HEAD
+- path: Assets/Scenes/MusicMenu.unity
+=======
 - path: Assets/Scenes/Florians scene.unity
+>>>>>>> 0ac8599bcf996a057a1773c8b95a49e7735449a4
+>>>>>>> ee5267b113f077b8cb7f6473e51b74ddf9753b81
   isLoaded: 1
   isActive: 1

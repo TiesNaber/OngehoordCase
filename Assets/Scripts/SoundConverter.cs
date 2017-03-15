@@ -98,7 +98,7 @@ public class SoundConverter : MonoBehaviour {
     /// Spawns a power up on the wave
     /// </summary>
     /// <param name="parent"></param>
-    bool SpawnPowerUp(Transform parent)
+    void SpawnPowerUp(Transform parent)
     {
         if(!powerUpInScene && Random.Range(0, 1000) < 2)
         {
@@ -106,11 +106,10 @@ public class SoundConverter : MonoBehaviour {
             powerUp.transform.position = new Vector3(parent.position.x, parent.position.y + 0.1f, parent.position.z);
             powerUpInScene = true;
             Debug.Log("power up spawned");
-            return true;
         }
         else
         {
-            return false;
+            return;
         }
     }
 
@@ -145,11 +144,8 @@ public class SoundConverter : MonoBehaviour {
                 waveObj.GetComponent<MeshRenderer>().material.color = colors[i];
                 waveObj.GetComponent<Light>().color = colors[i];
                 waveObj.GetComponent<Movement>().myFreq = i;
-                string tag = "freq" + (i + 1);
-                waveObj.tag = tag;
-
-                if (SpawnPowerUp(waveObj.transform))
-                    waveObj.GetComponent<Movement>().hasPowerUp = true;
+                waveObj.tag = "freq" + (i + 1);
+                SpawnPowerUp(waveObj.transform);
 
                 if (parents[i] != null)
                 {
