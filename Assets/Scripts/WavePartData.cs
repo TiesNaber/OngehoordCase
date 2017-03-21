@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class WavePartData : MonoBehaviour {
 
-    float intensityData = 0;
+    float frequencyData = 0;
 
-    public float IntensityData
+    public float FrequencyData
     {
-        set { intensityData = value; }
-        get { return intensityData; }
+        set { frequencyData = value; }
+        get { return frequencyData; }
 
     }
 }
