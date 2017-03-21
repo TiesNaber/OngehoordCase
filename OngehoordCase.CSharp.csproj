@@ -75,20 +75,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\ControllerScript.cs" />
     <Compile Include="Assets\Scripts\ButtonScript.cs" />
+    <Compile Include="Assets\Scripts\ControllerScript.cs" />
     <Compile Include="Assets\Scripts\Displays.cs" />
     <Compile Include="Assets\Scripts\HearingDamage.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />
     <Compile Include="Assets\Scripts\ScoreScript.cs" />
-    <Compile Include="Assets\Scripts\ShowSongName.cs" />
-    <Compile Include="Assets\Scripts\SizeDecreaser.cs" />
     <Compile Include="Assets\Scripts\SongLoader.cs" />
     <Compile Include="Assets\Scripts\SoundConverter.cs" />
     <Compile Include="Assets\Scripts\SoundResponseLight.cs" />
     <Compile Include="Assets\Scripts\SpawnWaves.cs" />
     <Compile Include="Assets\Scripts\WaveCollider.cs" />
-    <Compile Include="Assets\Scripts\mesh.cs" />
     <Compile Include="Assets\Scripts\tempPlayerMov.cs" />
     <Compile Include="Assets\SimpleParticlePack\Scripts\ParticleTester.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />

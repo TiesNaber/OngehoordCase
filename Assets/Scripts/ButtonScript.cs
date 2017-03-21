@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
@@ -15,7 +15,7 @@ public class ButtonScript : MonoBehaviour {
    
     public GameObject selectButton;
 
-
+    [SerializeField]
     AudioSource audio;
 
    
@@ -40,42 +40,30 @@ public class ButtonScript : MonoBehaviour {
         Debug.DrawRay(transform.position, transform.forward * lookingLength, Color.red);
         if(Physics.Raycast(rayDir, out lookAt, lookingLength))
         {                        
-                if (lookAt.collider.gameObject.tag == "Button" && !lookAt.collider.GetComponent<AudioSource>().isPlaying)
-                {
+            if (lookAt.collider.gameObject.tag == "Button" && !lookAt.collider.GetComponent<AudioSource>().isPlaying)
+            {
+                Debug.Log("found one");
 
                 audio = lookAt.collider.GetComponent<AudioSource>();
                 audio.time = 30;
                 audio.Play();
                 Debug.Log(audio.clip);
-                songName.text = "Song: " + audio.clip;
+               
                 Debug.Log("Looking");
-                                
+                audio.enabled = true;
 
-                }
-            audio.enabled = true;
-          
-
+            }
         }
 
         else
         {
+            Debug.Log("lost");
             if (audio != null)
             {
                 audio.enabled = false;
                 audio = null;
 
-            }
-
-           
-            
-           
-            
+            } 
         }
-
-        
     }
-
-    
-
- 
 }

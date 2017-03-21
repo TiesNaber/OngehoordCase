@@ -11,14 +11,15 @@ public class ScoreScript : MonoBehaviour {
     int score = 0;
 
     [SerializeField]
-    Image damageBar;
-    [SerializeField]
     Text percentage;
     [SerializeField]
-    float hearing = 30;
+    int hearing = 100;
 
-	// Use this for initialization
-	void Start () {
+    [SerializeField]
+    Image hearingBar;
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -42,9 +43,14 @@ public class ScoreScript : MonoBehaviour {
     /// <param name="damage">Amount of damage to add</param>
     public void UpdateHearingDamage(int damage)
     {
-        hearing -= damage;
-        percentage.text = hearing + "%"; 
-        damageBar.transform.localScale = new Vector3(hearing / 100, 0.1f, 1);
-        Debug.Log(hearing / 100);
+        if (hearing > 0)
+        {
+            hearing -= damage;
+
+            hearingBar.transform.localScale = new Vector3((float)hearing / 100, 0.1f, 1);
+            percentage.text = hearing + "%";
+        }
+        
+        //Debug.Log((float)hearing / 100);
     }
 }

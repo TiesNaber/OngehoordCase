@@ -47,13 +47,14 @@ public class Movement : MonoBehaviour {
         }
         if (col.tag == "EarDrum")
         {
-            if (transform.childCount != 0)
+            if (transform.childCount != 0 && transform.GetChild(0).name != "PowerUp")
             {
                 transform.GetChild(0).parent = null;
             }
             GameObject.Find("HearingDamagaeTempHolder").transform.FindChild(this.tag).GetComponent<HearingDamage>().GetDamage();
             GameManager.GetComponent<SoundConverter>().powerUpInScene = false;
             GameManager.GetComponent<ScoreScript>().UpdateHearingDamage(1);
+
             Destroy(gameObject);
         }
     }

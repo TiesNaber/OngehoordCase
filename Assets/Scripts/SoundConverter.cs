@@ -105,6 +105,7 @@ public class SoundConverter : MonoBehaviour {
             GameObject powerUp = (GameObject)Instantiate(powerUpObject, parent);
             powerUp.transform.position = new Vector3(parent.position.x, parent.position.y + 0.1f, parent.position.z);
             powerUpInScene = true;
+            powerUp.name = "PowerUp";
             Debug.Log("power up spawned");
         }
         else
