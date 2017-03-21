@@ -141,7 +141,14 @@ public class SoundConverter : MonoBehaviour {
             if (freqs[i] > triggers[i])
             {
                 StopCoroutine(ParentNuller(i));
-                GameObject waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + intens[0] / 10 + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.identity);
+                //GameObject waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + intens[i] / 10 + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.identity);
+                GameObject waveObj = null;
+
+                if (parents[i] == null)
+                    waveObj = NoteIntensity(1, i, wavePos, intens[i], null);
+                else
+                    waveObj = NoteIntensity(1, i, wavePos, intens[i], parents[i].GetComponent<WavePartData>());
+
                 waveObj.GetComponent<MeshRenderer>().material.color = colors[i];
                 waveObj.GetComponent<Light>().color = colors[i];
                 waveObj.GetComponent<Movement>().myFreq = i;
@@ -150,8 +157,10 @@ public class SoundConverter : MonoBehaviour {
 
                 if (parents[i] != null)
                 {
+                    float difference = parents[i].GetComponent<WavePartData>().IntensityData;
+                    Debug.Log(difference);
                     waveObj.transform.parent = parents[i];
-                    waveObj.transform.position = new Vector3(parents[i].position.x - 0.1f, parents[i].transform.position.y + intens[i] / 10, parents[i].transform.position.z);
+                    waveObj.transform.position = new Vector3(parents[i].position.x - 0.1f, parents[i].transform.position.y - difference /*+ intens[i] / 10*/, parents[i].transform.position.z);
                     parents[i] = waveObj.transform;
                 }
                 else
@@ -165,5 +174,39 @@ public class SoundConverter : MonoBehaviour {
                 StartCoroutine(ParentNuller(i));
             }
         }
+    }
+
+    GameObject NoteIntensity(int type, int i, Vector3 wavePos, float intens, WavePartData parent)
+    {
+        GameObject waveObj = null;
+
+        if(parent == null)
+        {
+            waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.identity);
+            if (type == 0)
+                waveObj.GetComponent<WavePartData>().IntensityData = intens;
+            else
+                waveObj.GetComponent<WavePartData>().IntensityData = 0;
+
+            return waveObj;
+        }
+
+        switch(type)
+        {
+            case 0:
+                waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y - parent.IntensityData + intens / 10 + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.identity);
+                waveObj.GetComponent<WavePartData>().IntensityData = intens;
+                break;
+            case 1:
+                waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.identity);
+                float height = intens / 2;
+                waveObj.transform.localScale = new Vector3(0.1f, Mathf.Clamp(height, 0.05f, 0.4f), 0.1f);
+                break;
+            case 2:
+                waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.identity);
+                break;
+        }
+
+        return waveObj;
     }
 }
