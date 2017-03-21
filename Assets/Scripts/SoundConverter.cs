@@ -78,7 +78,7 @@ public class SoundConverter : MonoBehaviour {
     /// Returns the intensity of each frequentie 
     /// </summary>
     /// <returns>Array of intensities</returns>
-    float[] GetIntensity()
+    public float[] GetIntensity()
     {
         float[] spectrum = new float[1024];
 
