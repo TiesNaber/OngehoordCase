@@ -20,7 +20,7 @@ public class SoundResponseLight : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if(transform.parent == null)
+        //if(transform.parent == null)
             GlowOnBeat();
 	}
 
@@ -57,6 +57,8 @@ public class SoundResponseLight : MonoBehaviour {
                 break;
         }
 
-        GetComponent<Light>().intensity = frequency[i] * multiplier;
+        GetComponent<Light>().intensity = Mathf.Clamp(frequency[i] * multiplier, 0.2f, 0.8f);
+        GetComponent<Light>().range = Mathf.Clamp(frequency[i] * multiplier, 0.5f, 1.5f);
     }
+
 }

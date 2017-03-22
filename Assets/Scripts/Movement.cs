@@ -66,7 +66,7 @@ public class Movement : MonoBehaviour {
 
         float[] freqs = GameManager.GetComponent<SoundConverter>().Analyse();
 
-        float yMov = Mathf.Sin((Time.time - startTime) * wiggleTime) * (wiggleMove + freqs[myFreq] / 4);
+        float yMov = Mathf.Sin((Time.time - startTime) * wiggleTime) * wiggleMove;
         transform.position = new Vector3(transform.position.x, startY + yMov, transform.position.z);
 	}
 

@@ -86,6 +86,7 @@
     <Compile Include="Assets\Scripts\SoundResponseLight.cs" />
     <Compile Include="Assets\Scripts\SpawnWaves.cs" />
     <Compile Include="Assets\Scripts\WaveCollider.cs" />
+    <Compile Include="Assets\Scripts\WavePartData.cs" />
     <Compile Include="Assets\Scripts\tempPlayerMov.cs" />
     <Compile Include="Assets\SimpleParticlePack\Scripts\ParticleTester.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
