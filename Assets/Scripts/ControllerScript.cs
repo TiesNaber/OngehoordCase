@@ -33,7 +33,7 @@ public class ControllerScript : MonoBehaviour {
     public bool TriggerDown()
     {
         Debug.Log("Trigger Pressed");
-        return Controller.GetTouch(SteamVR_Controller.ButtonMask.Trigger);
+        return Controller.GetPress(EVRButtonId.k_EButton_SteamVR_Trigger);
     }
 	
 	// Update is called once per frame
@@ -64,14 +64,9 @@ public class ControllerScript : MonoBehaviour {
                 col.attachedRigidbody.isKinematic = false;
 
                 TossObject(col.attachedRigidbody);
-            }           
-        }
+            }
 
-        if (col.tag == "PowerUp" && TriggerDown())
-        {
-            Debug.Log("grab power up");
-            Destroy(col.gameObject);
-            //TODO: Set An action
+
         }
     }
 

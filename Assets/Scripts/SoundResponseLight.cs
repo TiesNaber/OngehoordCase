@@ -58,7 +58,7 @@ public class SoundResponseLight : MonoBehaviour {
         }
 
         GetComponent<Light>().intensity = Mathf.Clamp(frequency[i] * multiplier, 0.2f, 0.8f);
-        GetComponent<Light>().range = Mathf.Clamp(frequency[i] * multiplier, 0.5f, 1.5f);
+        GetComponent<Light>().range = Mathf.Clamp(frequency[i] * multiplier, 0.5f, 1.9f);
     }
 
 }
