@@ -77,6 +77,7 @@
   <ItemGroup>
     <Compile Include="Assets\Scripts\ButtonScript.cs" />
     <Compile Include="Assets\Scripts\ControllerScript.cs" />
+    <Compile Include="Assets\Scripts\CountDown.cs" />
     <Compile Include="Assets\Scripts\Displays.cs" />
     <Compile Include="Assets\Scripts\HearingDamage.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />

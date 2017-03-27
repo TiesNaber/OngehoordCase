@@ -51,12 +51,7 @@ public class Movement : MonoBehaviour {
             {
                 transform.GetChild(0).parent = null;
             }
-            else if(transform.childCount != 0 && transform.GetChild(0).name == "PowerUp")
-            {
-                Destroy(transform.GetChild(0).gameObject);
-            }
-            GameManager.transform.GetChild(0).GetComponent<HearingDamage>().GetDamage(myFreq);
-            GameManager.transform.GetChild(0).GetComponent<HearingDamage>().QuitCoroutine(myFreq);
+            GameObject.Find("HearingDamagaeTempHolder").transform.FindChild(this.tag).GetComponent<HearingDamage>().GetDamage();
             GameManager.GetComponent<SoundConverter>().powerUpInScene = false;
             GameManager.GetComponent<ScoreScript>().UpdateHearingDamage(1);
 
@@ -85,13 +80,11 @@ public class Movement : MonoBehaviour {
 
         if (transform.parent == null && transform.childCount == 0)
         {
-            Debug.Log(gameObject.name + "set false");
             Destroy(gameObject);
         }
         else  if(transform.childCount == 1 && transform.GetChild(0).tag == "PowerUp")
         {
             GameManager.GetComponent<SoundConverter>().powerUpInScene = false;
-            Destroy(gameObject.transform.GetChild(0).gameObject);
             Destroy(gameObject);
         }
     }

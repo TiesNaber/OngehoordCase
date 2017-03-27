@@ -6,13 +6,13 @@ using UnityEngine;
 public class HearingDamage : MonoBehaviour {
 
     [SerializeField]
-    float[] health;
+    float health = 100;
     [SerializeField]
-    float damage = 0.1f;
+    float damage = 0.5f;
     [SerializeField]
     int minHealth = 40;
-    [SerializeField]
-    GameObject gameManager;
+
+    float beepTime;
     [SerializeField]
     float repairTime;
 
@@ -23,59 +23,31 @@ public class HearingDamage : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        AudioFeedback();
-    }
-
-    public void AudioFeedback()
-    {
-        float vol = 0;
-
-        for (int i = 0; i < health.Length; i++)
+		if(health < minHealth)
         {
-            if (health[i] < minHealth)
-                vol += 0.2f;
-
-            if (vol == 0.4f)
-                return;
+            if(beepTime % repairTime > 2)
+            {
+                Debug.Log("yes");
+                health++;
+            }
         }
-        GetComponent<AudioSource>().volume = vol;
-
-        vol = 0;
-
-        for (int i = 0; i < health.Length; i++)
+        else
         {
-            if (health[i] < minHealth)
-                vol += 0.2f;
+            GetComponent<AudioSource>().enabled = false;
         }
-        gameManager.GetComponent<AudioSource>().volume = 1 - vol;
-    }
+	}
 
-    public void GetDamage(int freq)
+    public void GetDamage()
     {
-        health[freq] -= damage;
+        health -= damage;
 
-        if(health[freq] < minHealth)
+        if(health < minHealth)
         {
-            //TEMPORAIRLY OFF BECAUSE THE BEEP IS F*CKING ANNOYING
-            StartCoroutine(Paralization(freq));
-            
+            /*TEMPORAIRLY OFF BECAUSE THE BEEP IS F*CKING ANNOYING
+            GetComponent<AudioSource>().enabled = true;
+            beepTime = Time.time;
+            */
             //TODO: Also make it visual where the damage is!!!!!
-        }
-    }
-
-    public void QuitCoroutine(int freq)
-    {
-        StopCoroutine(Paralization(freq));
-    }
-
-    IEnumerator Paralization(int freq)
-    {
-        yield return new WaitForSeconds(repairTime);
-        health[freq] += 1f;
-
-        if(health[freq] < minHealth && health[freq] <= 0)
-        {
-            StartCoroutine(Paralization(freq));
         }
     }
 }
