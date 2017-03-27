@@ -32,7 +32,7 @@ public class SoundConverter : MonoBehaviour {
 
     void Start()
     {
-        GetComponent<AudioSource>().time = 40;
+        //GetComponent<AudioSource>().time = 40;
     }
 
     void Update()
