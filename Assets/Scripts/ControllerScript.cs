@@ -16,6 +16,8 @@ public class ControllerScript : MonoBehaviour {
     [SerializeField]
     [Range(1000, 8000)]
     private ushort vibrate = 2000;
+    [SerializeField]
+    Transform plugParent;
 
     void Awake()
     {
@@ -25,7 +27,7 @@ public class ControllerScript : MonoBehaviour {
     public void HapticFeedback()
     {
         Debug.Log("Vibrate");
-        Controller.TriggerHapticPulse(vibrate, EVRButtonId.k_EButton_Axis0);
+        Controller.TriggerHapticPulse(1000, EVRButtonId.k_EButton_Axis0);
     }
 
     public bool TriggerDown()
@@ -58,7 +60,7 @@ public class ControllerScript : MonoBehaviour {
             }
             if (Controller.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
             {
-                col.gameObject.transform.SetParent(null);
+                col.gameObject.transform.SetParent(plugParent);
                 col.attachedRigidbody.isKinematic = false;
 
                 TossObject(col.attachedRigidbody);

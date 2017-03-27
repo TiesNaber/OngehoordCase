@@ -13,7 +13,7 @@ public class ButtonScript : MonoBehaviour {
 
     
    
-    public GameObject selectButton;
+    
 
     [SerializeField]
     AudioSource audio;

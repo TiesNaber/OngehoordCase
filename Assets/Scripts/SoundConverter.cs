@@ -27,7 +27,7 @@ public class SoundConverter : MonoBehaviour {
     GameObject powerUpObject;
 
     [SerializeField]
-    [Range(0.075f, 0.12f)]
+    [Range(0f, 0.12f)]
     float hill = 0.8f;
 
     void Start()

@@ -36,7 +36,7 @@ public class SongLoader : MonoBehaviour {
         for (int i = 0; i < songs.Length; i++)
         {
             float angle = i * Mathf.PI * 2 / songs.Length;
-            Vector3 pos = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)) * radius;
+            Vector3 pos = new Vector3( Mathf.Cos(angle), 0.1f, Mathf.Sin(angle)) * radius;
             GameObject cube = (GameObject)Instantiate(cover, pos, Quaternion.identity);
             cube.transform.LookAt(player);
             cube.transform.parent = coverCircle.transform;

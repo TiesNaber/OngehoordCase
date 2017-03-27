@@ -23,7 +23,7 @@ public class HearingDamage : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        AudioFeedback();
+        //AudioFeedback();
     }
 
     public void AudioFeedback()
