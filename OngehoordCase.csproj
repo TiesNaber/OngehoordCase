@@ -80,14 +80,12 @@
     <Compile Include="Assets\Scripts\Displays.cs" />
     <Compile Include="Assets\Scripts\HearingDamage.cs" />
     <Compile Include="Assets\Scripts\Movement.cs" />
-    <Compile Include="Assets\Scripts\PlaneDropDown.cs" />
     <Compile Include="Assets\Scripts\ScoreScript.cs" />
     <Compile Include="Assets\Scripts\SongLoader.cs" />
     <Compile Include="Assets\Scripts\SoundConverter.cs" />
     <Compile Include="Assets\Scripts\SoundResponseLight.cs" />
     <Compile Include="Assets\Scripts\SpawnWaves.cs" />
     <Compile Include="Assets\Scripts\WaveCollider.cs" />
-    <Compile Include="Assets\Scripts\WavePartData.cs" />
     <Compile Include="Assets\Scripts\tempPlayerMov.cs" />
     <Compile Include="Assets\SimpleParticlePack\Scripts\ParticleTester.cs" />
     <Compile Include="Assets\SteamVR\Extras\SteamVR_GazeTracker.cs" />
