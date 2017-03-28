@@ -23,7 +23,6 @@ public class HearingDamage : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-<<<<<<< HEAD
         //AudioFeedback();
     }
 
@@ -31,10 +30,9 @@ public class HearingDamage : MonoBehaviour {
     {
         float vol = 0;
 
-        for (int i = 0; i < health.Length; i++)
-=======
+        for (int i = 0; i < health; i++)
 		if(health < minHealth)
->>>>>>> 32de1f1a0b5a64b31394443855defdc984211d5d
+
         {
             if(beepTime % repairTime > 2)
             {

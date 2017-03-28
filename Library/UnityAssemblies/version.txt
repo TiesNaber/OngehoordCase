@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-5.5.2f1:3.0.0.1
-=======
-5.5.0f3:2.3.0.0
->>>>>>> 32de1f1a0b5a64b31394443855defdc984211d5d
+5.5.2f1:2.2.0.0
 StandaloneWindows64
 C:/Program Files/Unity/Editor/Data/Managed/UnityEngine.dll
 C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll
