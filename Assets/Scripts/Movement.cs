@@ -14,6 +14,8 @@ public class Movement : MonoBehaviour {
     float speed;
     [SerializeField]
     GameObject particles;
+    [SerializeField]
+    GameObject hearingDamage;
 
     public int myFreq;
 
@@ -51,7 +53,7 @@ public class Movement : MonoBehaviour {
             {
                 transform.GetChild(0).parent = null;
             }
-            GameObject.Find("HearingDamagaeTempHolder").transform.FindChild(this.tag).GetComponent<HearingDamage>().GetDamage();
+            GameManager.transform.GetChild(0).GetComponent<HearingDamage>().GetDamage(myFreq);
             GameManager.GetComponent<SoundConverter>().powerUpInScene = false;
             GameManager.GetComponent<ScoreScript>().UpdateHearingDamage(1);
 
@@ -63,8 +65,6 @@ public class Movement : MonoBehaviour {
 	void Update () {
         if(transform.parent == null)
             transform.Translate(new Vector3(speed * Time.deltaTime, 0, 0));
-
-        float[] freqs = GameManager.GetComponent<SoundConverter>().Analyse();
 
         float yMov = Mathf.Sin((Time.time - startTime) * wiggleTime) * wiggleMove;
         transform.position = new Vector3(transform.position.x, startY + yMov, transform.position.z);

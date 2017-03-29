@@ -27,7 +27,7 @@ public class SoundConverter : MonoBehaviour {
     GameObject powerUpObject;
 
     [SerializeField]
-    [Range(0f, 0.12f)]
+    [Range(0.075f, 0.12f)]
     float hill = 0.8f;
 
     void Start()
@@ -154,7 +154,8 @@ public class SoundConverter : MonoBehaviour {
                     waveObj = NoteIntensity(1, i, wavePos, freqs[i], parents[i].GetComponent<WavePartData>());
 
                 waveObj.GetComponent<MeshRenderer>().material.color = colors[i];
-                waveObj.GetComponent<Light>().color = colors[i];
+                
+               // waveObj.GetComponent<Light>().color = colors[i];
                 waveObj.GetComponent<Movement>().myFreq = i;
                 waveObj.tag = "freq" + (i + 1);
                 SpawnPowerUp(waveObj.transform);

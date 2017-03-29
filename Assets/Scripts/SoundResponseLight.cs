@@ -5,14 +5,13 @@ using UnityEngine;
 public class SoundResponseLight : MonoBehaviour {
 
     SoundConverter soundConv;
-    Color myColor;
+    float startY;
 
 	// Use this for initialization
 	void Start () {
 
-        myColor = GetComponent<MeshRenderer>().material.color;
-
         soundConv = GameObject.Find("GameManager").GetComponent<SoundConverter>();
+        startY = 0.1f;
 
         if (soundConv == null)
             Debug.Log("Script not found!");
@@ -20,8 +19,13 @@ public class SoundResponseLight : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        //if(transform.parent == null)
+        if (transform.parent == null)
+        {
+            //if(!GetComponent<Light>().enabled)
+                //GetComponent<Light>().enabled = true;
+
             GlowOnBeat();
+        }
 	}
 
     /// <summary>
@@ -32,7 +36,7 @@ public class SoundResponseLight : MonoBehaviour {
         float[] frequency = soundConv.Analyse();
         int i = 0;
         int multiplier = 1;
-
+        
         switch (tag)
         {
             case "freq1":
@@ -57,8 +61,7 @@ public class SoundResponseLight : MonoBehaviour {
                 break;
         }
 
-        GetComponent<Light>().intensity = Mathf.Clamp(frequency[i] * multiplier, 0.2f, 0.8f);
-        GetComponent<Light>().range = Mathf.Clamp(frequency[i] * multiplier, 0.5f, 1.9f);
+        transform.localScale = new Vector3(transform.localScale.x, startY + frequency[i] / 10, transform.localScale.z);
     }
 
 }
