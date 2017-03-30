@@ -5,7 +5,7 @@ using UnityEngine;
 public class SongLoader : MonoBehaviour {
 
     [SerializeField]
-    float radius;
+    float radius = 10;
     [SerializeField]
     Transform player;
     [SerializeField]
@@ -13,12 +13,13 @@ public class SongLoader : MonoBehaviour {
     [SerializeField]
     GameObject coverCircle;
 
+  
+
     object[] songs;
 
 	// Use this for initialization
 	void Start () {
         songs = Resources.LoadAll("Songs");
-        radius = songs.Length;
 
         DrawCircle();
 	}
