@@ -13,14 +13,17 @@ public class ScoreScript : MonoBehaviour {
     [SerializeField]
     Text percentage;
     [SerializeField]
-    int hearing = 100;
+    float hearing;
 
     [SerializeField]
     Image hearingBar;
+    [SerializeField]
+    HearingDamage hearingHealth;
 
     // Use this for initialization
     void Start () {
-		
+        hearingHealth = transform.GetChild(0).GetComponent<HearingDamage>();
+        hearing = hearingHealth.GetTotalHearingHealth() / 10;
 	}
 	
 	// Update is called once per frame
@@ -41,13 +44,13 @@ public class ScoreScript : MonoBehaviour {
     /// Update the hearing damage
     /// </summary>
     /// <param name="damage">Amount of damage to add</param>
-    public void UpdateHearingDamage(int damage)
+    public void UpdateHearingDamage()
     {
         if (hearing > 0)
         {
-            hearing -= damage;
+            hearing = hearingHealth.GetTotalHearingHealth() / 10;
 
-            hearingBar.transform.localScale = new Vector3((float)hearing / 100, 0.1f, 1);
+            hearingBar.transform.localScale = new Vector3((float)hearing / 100, 0.15f, 1);
             percentage.text = hearing + "%";
         }
         

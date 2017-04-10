@@ -51,7 +51,7 @@ public class GameManager : MonoBehaviour {
         songLoader.enabled = true;
         soundConverter.enabled = false;
         scoreScript.enabled = false;
-        EyeCamera.GetComponent<EarScript>().enabled = true;
+        EyeCamera.GetComponent<ButtonScript>().enabled = true;
         playEnvironment.SetActive(false);
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class SongLoader : MonoBehaviour {
 
     [SerializeField]
-    float radius = 10;
+    float radius;
     [SerializeField]
     Transform player;
     [SerializeField]
@@ -13,13 +13,12 @@ public class SongLoader : MonoBehaviour {
     [SerializeField]
     GameObject coverCircle;
 
-  
-
     object[] songs;
 
 	// Use this for initialization
 	void Start () {
         songs = Resources.LoadAll("Songs");
+        radius = songs.Length;
 
         DrawCircle();
 	}
@@ -37,7 +36,7 @@ public class SongLoader : MonoBehaviour {
         for (int i = 0; i < songs.Length; i++)
         {
             float angle = i * Mathf.PI * 2 / songs.Length;
-            Vector3 pos = new Vector3( Mathf.Cos(angle), 0.1f, Mathf.Sin(angle)) * radius;
+            Vector3 pos = new Vector3( Mathf.Cos(angle), 0.1f, Mathf.Sin(angle)) * (radius / 2);
             GameObject cube = (GameObject)Instantiate(cover, pos, Quaternion.identity);
             cube.transform.LookAt(player);
             cube.transform.parent = coverCircle.transform;

@@ -32,7 +32,7 @@ public class SoundConverter : MonoBehaviour {
 
     void Start()
     {
-        GetComponent<AudioSource>().time = 40;
+        GetComponent<AudioSource>().time = 0;
     }
 
     void Update()
@@ -106,11 +106,11 @@ public class SoundConverter : MonoBehaviour {
     {
         if(!powerUpInScene && Random.Range(0, 1000) < 2)
         {
-            GameObject powerUp = (GameObject)Instantiate(powerUpObject, parent);
+            /*GameObject powerUp = (GameObject)Instantiate(powerUpObject, parent);
             powerUp.transform.position = new Vector3(parent.position.x, parent.position.y + 0.1f, parent.position.z);
             powerUpInScene = true;
             powerUp.name = "PowerUp";
-            Debug.Log("power up spawned");
+            Debug.Log("power up spawned");*/
         }
         else
         {
@@ -149,13 +149,20 @@ public class SoundConverter : MonoBehaviour {
                 GameObject waveObj = null;
 
                 if (parents[i] == null)
+                {
                     waveObj = NoteIntensity(1, i, wavePos, freqs[i], null);
+                    waveObj.layer = 9;
+                }
                 else
+                {
                     waveObj = NoteIntensity(1, i, wavePos, freqs[i], parents[i].GetComponent<WavePartData>());
+                    waveObj.layer = 0;
+                }
 
                 waveObj.GetComponent<MeshRenderer>().material.color = colors[i];
-                
-               // waveObj.GetComponent<Light>().color = colors[i];
+                waveObj.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", colors[i]);
+
+                // waveObj.GetComponent<Light>().color = colors[i];
                 waveObj.GetComponent<Movement>().myFreq = i;
                 waveObj.tag = "freq" + (i + 1);
                 SpawnPowerUp(waveObj.transform);
@@ -164,7 +171,7 @@ public class SoundConverter : MonoBehaviour {
                 {
                     float difference = parents[i].GetComponent<WavePartData>().FrequencyData;
                     waveObj.transform.parent = parents[i];
-                    waveObj.transform.position = new Vector3(parents[i].position.x - 0.1f, parents[i].transform.position.y - hill /*+ intens[i] / 10*/, parents[i].transform.position.z);
+                    waveObj.transform.position = new Vector3(parents[i].position.x - 0.1f, parents[i].transform.position.y - 0.01f /*+ intens[i] / 10*/, parents[i].transform.position.z);
                     parents[i] = waveObj.transform;
                 }
                 else
@@ -180,6 +187,15 @@ public class SoundConverter : MonoBehaviour {
         }
     }
 
+    /// <summary>
+    /// NOTE: this is obsolete we can remove this later
+    /// </summary>
+    /// <param name="type"></param>
+    /// <param name="i"></param>
+    /// <param name="wavePos"></param>
+    /// <param name="freq"></param>
+    /// <param name="parent"></param>
+    /// <returns></returns>
     GameObject NoteIntensity(int type, int i, Vector3 wavePos, float freq, WavePartData parent)
     {
         GameObject waveObj = null;
@@ -203,8 +219,6 @@ public class SoundConverter : MonoBehaviour {
                 break;
             case 1:
                 waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.identity);
-                float height = freq / 2;
-                waveObj.transform.localScale = new Vector3(0.1f, Mathf.Clamp(height, 0.05f, 0.4f), 0.1f);
                 break;
             case 2:
                 waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.identity);

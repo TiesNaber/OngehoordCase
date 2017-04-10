@@ -15,6 +15,8 @@ public class HearingDamage : MonoBehaviour {
     GameObject gameManager;
     [SerializeField]
     float repairTime;
+    [SerializeField]
+    VisualFeedback visuals;
 
     // Use this for initialization
     void Start()
@@ -25,7 +27,7 @@ public class HearingDamage : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        //AudioFeedback();
+        AudioFeedback();
     }
 
     public void AudioFeedback()
@@ -47,22 +49,43 @@ public class HearingDamage : MonoBehaviour {
         for (int i = 0; i < health.Length; i++)
         {
             if (health[i] < minHealth)
-                vol += 0.2f;
+                vol += 0.05f;
         }
         gameManager.GetComponent<AudioSource>().volume = 1 - vol;
     }
 
     public void GetDamage(int freq)
     {
-        health[freq] -= damage;
-
-        if (health[freq] < minHealth)
+        if (health[freq] > 0)
         {
-            //TEMPORAIRLY OFF BECAUSE THE BEEP IS F*CKING ANNOYING
-            StartCoroutine(Paralization(freq));
+            health[freq] -= damage;
 
-            //TODO: Also make it visual where the damage is!!!!!
+            if (health[freq] < minHealth)
+            {
+
+                //TEMPORAIRLY OFF BECAUSE THE BEEP IS F*CKING ANNOYING
+                StartCoroutine(Paralization(freq));
+                visuals.freqBools[freq] = true;
+
+                //TODO: Also make it visual where the damage is!!!!!
+            }
         }
+        else if(health[freq] < 0)
+        {
+            health[freq] = 0;
+        }
+    }
+
+    public float GetTotalHearingHealth()
+    {
+        float total = 0;
+
+        for (int i = 0; i < health.Length; i++)
+        {
+            total += health[i];
+        }
+
+        return total;
     }
 
     public void QuitCoroutine(int freq)
@@ -73,11 +96,22 @@ public class HearingDamage : MonoBehaviour {
     IEnumerator Paralization(int freq)
     {
         yield return new WaitForSeconds(repairTime);
-        health[freq] += 1f;
-
-        if (health[freq] < minHealth && health[freq] <= 0)
+        if (health[freq] > 0)
         {
-            StartCoroutine(Paralization(freq));
+            health[freq] += 1f;
+
+            if (health[freq] < minHealth && health[freq] <= 0)
+            {
+                StartCoroutine(Paralization(freq));
+            }
+            else
+            {
+                visuals.freqBools[freq] = false;
+            }
+        }
+        else
+        {
+            health[freq] = 0;
         }
     }
 }

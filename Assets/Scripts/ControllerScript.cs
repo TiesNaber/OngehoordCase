@@ -65,8 +65,12 @@ public class ControllerScript : MonoBehaviour {
 
                 TossObject(col.attachedRigidbody);
             }
+        }
 
-
+        if(col.name == "PowerUp" && TriggerDown())
+        {
+            Destroy(col.gameObject);
+            ///TODO: Activate powerUp
         }
     }
 

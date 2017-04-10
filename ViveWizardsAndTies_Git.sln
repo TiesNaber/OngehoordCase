@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViveWizardsAndTies_Git", "ViveWizardsAndTies_Git.csproj", "{D476C0D8-3C45-59AF-E6FB-9F0EB3E28FDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ViveWizardsAndTies_Git.Editor", "ViveWizardsAndTies_Git.Editor.csproj", "{E9992CC3-0880-8538-240D-B8A9453EA097}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D476C0D8-3C45-59AF-E6FB-9F0EB3E28FDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D476C0D8-3C45-59AF-E6FB-9F0EB3E28FDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D476C0D8-3C45-59AF-E6FB-9F0EB3E28FDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D476C0D8-3C45-59AF-E6FB-9F0EB3E28FDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9992CC3-0880-8538-240D-B8A9453EA097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9992CC3-0880-8538-240D-B8A9453EA097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9992CC3-0880-8538-240D-B8A9453EA097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9992CC3-0880-8538-240D-B8A9453EA097}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

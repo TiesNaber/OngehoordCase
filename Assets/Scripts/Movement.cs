@@ -6,6 +6,7 @@ public class Movement : MonoBehaviour {
 
     float startTime;
     float startY;
+    float startZ;
     [SerializeField]
     float wiggleTime;
     [SerializeField]
@@ -19,12 +20,16 @@ public class Movement : MonoBehaviour {
 
     public int myFreq;
 
+    int typeSin;
+
     GameObject GameManager;
 
 	// Use this for initialization
 	void Start () {
         startTime = Time.time;
-        startY = this.transform.position.y;
+        startY = transform.position.y;
+        startZ = transform.position.z;
+        typeSin = Random.Range(0, 2);
         StartCoroutine(DestroyLoner());
         GameManager = GameObject.Find("GameManager");
 	}
@@ -55,7 +60,7 @@ public class Movement : MonoBehaviour {
             }
             GameManager.transform.GetChild(0).GetComponent<HearingDamage>().GetDamage(myFreq);
             GameManager.GetComponent<SoundConverter>().powerUpInScene = false;
-            GameManager.GetComponent<ScoreScript>().UpdateHearingDamage(1);
+            GameManager.GetComponent<ScoreScript>().UpdateHearingDamage();
 
             Destroy(gameObject);
         }
@@ -66,9 +71,25 @@ public class Movement : MonoBehaviour {
         if(transform.parent == null)
             transform.Translate(new Vector3(speed * Time.deltaTime, 0, 0));
 
-        float yMov = Mathf.Sin((Time.time - startTime) * wiggleTime) * wiggleMove;
-        transform.position = new Vector3(transform.position.x, startY + yMov, transform.position.z);
+        float yMov = 0;
+        float zMov = 0;
+
+        if (typeSin == 1)
+        {
+            yMov = Mathf.Sin((Time.time - startTime) * wiggleTime) * wiggleMove;
+            zMov = 0;
+        }
+        else 
+        {
+           zMov = Mathf.Sin((Time.time - startTime) * wiggleTime) * wiggleMove;
+            yMov = 0;
+        }
+        transform.position = new Vector3(transform.position.x, startY + yMov, startZ + zMov);
 	}
+    
+    ///
+    ///Maybe a circular motion?...
+    ///
 
     /// <summary>
     /// Destroy the lonely wave parts
