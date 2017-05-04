@@ -7,6 +7,8 @@ public class ActivatePowerUp : MonoBehaviour {
     int amountTouched = 0;
     [SerializeField]
     List<GameObject> plugs = new List<GameObject>();
+    [SerializeField]
+    PowerUpAnim powerUpScript;
 
     // Use this for initialization
     void Start () {
@@ -25,6 +27,7 @@ public class ActivatePowerUp : MonoBehaviour {
             }
             plugs.Clear();
             Debug.Log("YESS POWER UP BIATCH!");
+            powerUpScript.powerUpActivated = true;
         }
 	}
 

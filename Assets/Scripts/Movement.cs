@@ -65,6 +65,10 @@ public class Movement : MonoBehaviour {
 
             Destroy(gameObject);
         }
+        if(col.tag == "GiantPlug")
+        {
+            Destroy(gameObject);
+        }
     }
 
 	// Update is called once per frame

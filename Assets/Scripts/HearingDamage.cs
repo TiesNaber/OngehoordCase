@@ -18,6 +18,8 @@ public class HearingDamage : MonoBehaviour {
     [SerializeField]
     VisualFeedback visuals;
 
+    public bool damped;
+
 
     // Use this for initialization
     void Start()
@@ -47,12 +49,15 @@ public class HearingDamage : MonoBehaviour {
 
         vol = 0;
 
-        for (int i = 0; i < health.Length; i++)
+        if (!damped)
         {
-            if (health[i] < minHealth)
-                vol += 0.05f;
+            for (int i = 0; i < health.Length; i++)
+            {
+                if (health[i] < minHealth)
+                    vol += 0.05f;
+            }
+            gameManager.GetComponent<AudioSource>().volume = 1 - vol;
         }
-        gameManager.GetComponent<AudioSource>().volume = 1 - vol;
     }
 
     public void GetDamage(int freq)
