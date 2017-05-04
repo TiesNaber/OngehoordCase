@@ -18,6 +18,8 @@ public class ControllerScript : MonoBehaviour {
     private ushort vibrate = 2000;
     [SerializeField]
     Transform plugParent;
+    [SerializeField]
+    bool holdObject = false;
 
     void Awake()
     {
@@ -27,7 +29,7 @@ public class ControllerScript : MonoBehaviour {
     public void HapticFeedback()
     {
         Debug.Log("Vibrate");
-        Controller.TriggerHapticPulse(1000, EVRButtonId.k_EButton_Axis0);
+        Controller.TriggerHapticPulse(3999, EVRButtonId.k_EButton_Axis0);
     }
 
     public bool TriggerDown()
@@ -46,17 +48,23 @@ public class ControllerScript : MonoBehaviour {
             plug.GetComponent<Rigidbody>().velocity = Vector3.zero;
             plug.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         }
+
+        if (transform.childCount == 2)
+            holdObject = false;
     }
 
     void OnTriggerStay(Collider col)
     {
-        if (col.tag == "Plug")
+        if (col.tag == "Plug" && !holdObject)
         {
             Debug.Log("you have collided with " + col.name);
             if (Controller.GetTouch(SteamVR_Controller.ButtonMask.Trigger))
             {
+                
                 col.attachedRigidbody.isKinematic = true;
                 col.gameObject.transform.SetParent(gameObject.transform);
+                col.transform.localScale = new Vector3(1, 1, 1);
+                holdObject = true;
             }
             if (Controller.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
             {
@@ -64,13 +72,8 @@ public class ControllerScript : MonoBehaviour {
                 col.attachedRigidbody.isKinematic = false;
 
                 TossObject(col.attachedRigidbody);
+                
             }
-        }
-
-        if(col.name == "PowerUp" && TriggerDown())
-        {
-            Destroy(col.gameObject);
-            ///TODO: Activate powerUp
         }
     }
 
@@ -87,5 +90,6 @@ public class ControllerScript : MonoBehaviour {
             rigidbody.velocity = Controller.velocity;
             rigidbody.angularVelocity = Controller.angularVelocity;
         }
+        holdObject = false;
     }
 }

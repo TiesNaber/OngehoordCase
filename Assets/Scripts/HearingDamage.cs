@@ -18,6 +18,7 @@ public class HearingDamage : MonoBehaviour {
     [SerializeField]
     VisualFeedback visuals;
 
+
     // Use this for initialization
     void Start()
     {

@@ -50,6 +50,7 @@ public class Movement : MonoBehaviour {
             particle.GetComponent<ParticleSystem>().startColor = GetComponent<MeshRenderer>().material.color;
             col.GetComponent<ControllerScript>().HapticFeedback();
             GameManager.GetComponent<ScoreScript>().UpdateScore(1);
+            col.transform.GetChild(1).GetChild(0).GetComponent<MeshRenderer>().material.color = GetComponent<MeshRenderer>().material.color;
             Destroy(gameObject);
         }
         if (col.tag == "EarDrum")
@@ -103,7 +104,7 @@ public class Movement : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-        else  if(transform.childCount == 1 && transform.GetChild(0).tag == "PowerUp")
+        else  if(transform.childCount == 1 && transform.GetChild(0).tag == "Plug")
         {
             GameManager.GetComponent<SoundConverter>().powerUpInScene = false;
             Destroy(gameObject);

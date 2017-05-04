@@ -104,13 +104,13 @@ public class SoundConverter : MonoBehaviour {
     /// <param name="parent"></param>
     void SpawnPowerUp(Transform parent)
     {
-        if(!powerUpInScene && Random.Range(0, 1000) < 2)
+        if(!powerUpInScene && Random.Range(0, 500) < 2)
         {
-            /*GameObject powerUp = (GameObject)Instantiate(powerUpObject, parent);
+            GameObject powerUp = (GameObject)Instantiate(powerUpObject, parent);
             powerUp.transform.position = new Vector3(parent.position.x, parent.position.y + 0.1f, parent.position.z);
             powerUpInScene = true;
             powerUp.name = "PowerUp";
-            Debug.Log("power up spawned");*/
+            Debug.Log("power up spawned");
         }
         else
         {
@@ -171,7 +171,7 @@ public class SoundConverter : MonoBehaviour {
                 {
                     float difference = parents[i].GetComponent<WavePartData>().FrequencyData;
                     waveObj.transform.parent = parents[i];
-                    waveObj.transform.position = new Vector3(parents[i].position.x - 0.1f, parents[i].transform.position.y - 0.01f /*+ intens[i] / 10*/, parents[i].transform.position.z);
+                    waveObj.transform.position = new Vector3(parents[i].position.x - 0.1f, parents[i].root.transform.position.y - 0.01f /*+ intens[i] / 10*/, parents[i].root.transform.position.z);
                     parents[i] = waveObj.transform;
                 }
                 else
