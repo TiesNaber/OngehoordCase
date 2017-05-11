@@ -20,7 +20,7 @@ public class Movement : MonoBehaviour {
 
     public int myFreq;
 
-    int typeSin;
+    public int typeSin;
 
     GameObject GameManager;
 
@@ -62,7 +62,7 @@ public class Movement : MonoBehaviour {
             GameManager.transform.GetChild(0).GetComponent<HearingDamage>().GetDamage(myFreq);
             GameManager.GetComponent<SoundConverter>().powerUpInScene = false;
             GameManager.GetComponent<ScoreScript>().UpdateHearingDamage();
-
+           
             Destroy(gameObject);
         }
         if(col.tag == "GiantPlug")
@@ -73,12 +73,19 @@ public class Movement : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        if(transform.parent == null)
+        if (transform.parent == null)
+        {
+            //Debug.Log("Movement");
             transform.Translate(new Vector3(speed * Time.deltaTime, 0, 0));
+        }
 
         float yMov = 0;
         float zMov = 0;
-
+        
+        if(transform.parent != null)
+        {
+            typeSin = transform.parent.GetComponent<Movement>().typeSin;
+        }
         if (typeSin == 1)
         {
             yMov = Mathf.Sin((Time.time - startTime) * wiggleTime) * wiggleMove;
@@ -106,11 +113,13 @@ public class Movement : MonoBehaviour {
 
         if (transform.parent == null && transform.childCount == 0)
         {
+            GameManager.GetComponent<ScoreScript>().PossibleScore = -1;
             Destroy(gameObject);
         }
         else  if(transform.childCount == 1 && transform.GetChild(0).tag == "Plug")
         {
             GameManager.GetComponent<SoundConverter>().powerUpInScene = false;
+            GameManager.GetComponent<ScoreScript>().PossibleScore = -1;
             Destroy(gameObject);
         }
     }

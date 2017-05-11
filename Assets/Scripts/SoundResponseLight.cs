@@ -11,7 +11,7 @@ public class SoundResponseLight : MonoBehaviour {
 	void Start () {
 
         soundConv = GameObject.Find("GameManager").GetComponent<SoundConverter>();
-        startY = 0.1f;
+        startY = 1f;
 
         if (soundConv == null)
             Debug.Log("Script not found!");
@@ -62,7 +62,7 @@ public class SoundResponseLight : MonoBehaviour {
         }
 
         if(transform.parent == null)
-            transform.localScale = new Vector3(0.1f , startY, 0.1f + (frequency[i] / 2));
+            transform.localScale = new Vector3(1f , startY, 1f + (frequency[i] / 2));
     }
 
 }

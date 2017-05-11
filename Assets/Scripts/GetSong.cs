@@ -21,7 +21,6 @@ public class GetSong : MonoBehaviour {
             audio =  collision.collider.GetComponent<AudioSource>().clip;
             gameManager.GetComponent<AudioSource>().clip = audio;
             gameManager.GetComponent<AudioSource>().PlayDelayed(5);
-            playScene.transform.parent.GetComponent<PlaneDropDown>().enabled = true;
             playScene.SetActive(true);
         }
     }
