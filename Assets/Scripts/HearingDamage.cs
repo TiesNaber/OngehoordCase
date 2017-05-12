@@ -10,13 +10,17 @@ public class HearingDamage : MonoBehaviour {
     [SerializeField]
     float damage = 0.1f;
     [SerializeField]
-    int minHealth = 40;
+    float healthTrigger;
     [SerializeField]
     GameObject gameManager;
     [SerializeField]
     float repairTime;
     [SerializeField]
     VisualFeedback visuals;
+    [SerializeField]
+    Transform[] visualExplodes;
+    [SerializeField]
+    int[] damagePhase;
 
     public bool damped;
 
@@ -24,7 +28,7 @@ public class HearingDamage : MonoBehaviour {
     // Use this for initialization
     void Start()
     {
-
+        healthTrigger = health[0] / 6;
     }
 
     // Update is called once per frame
@@ -35,17 +39,14 @@ public class HearingDamage : MonoBehaviour {
 
     public void AudioFeedback()
     {
-        float vol = 0;
-
-        for (int i = 0; i < health.Length; i++)
+        if (GetTotalHearingHealth() == 0)
         {
-            if (health[i] < minHealth)
-                vol += 0.2f;
-
-            if (vol == 0.4f)
-                return;
+            gameManager.GetComponent<AudioSource>().volume = 0;
         }
-        GetComponent<AudioSource>().volume = vol;
+
+        float vol = 1 - GetTotalHearingHealth() / 7.5f / 100;
+
+        GetComponent<AudioSource>().volume = vol / 2;
 
         vol = 0;
 
@@ -53,8 +54,8 @@ public class HearingDamage : MonoBehaviour {
         {
             for (int i = 0; i < health.Length; i++)
             {
-                if (health[i] < minHealth)
-                    vol += 0.05f;
+                //if (health[i] < minHealth)
+                  //  vol += 0.05f;
             }
             gameManager.GetComponent<AudioSource>().volume = 1 - vol;
         }
@@ -66,19 +67,28 @@ public class HearingDamage : MonoBehaviour {
         {
             health[freq] -= damage;
 
-            if (health[freq] < minHealth)
+            for (int i = 0; i < 6; i++)
             {
+                if (health[freq] < healthTrigger * damagePhase[freq] + 5)
+                {
 
-                //TEMPORAIRLY OFF BECAUSE THE BEEP IS F*CKING ANNOYING
-                StartCoroutine(Paralization(freq));
-                visuals.freqBools[freq] = true;
+                    visuals.freqBools[freq] = true;
 
-                //TODO: Also make it visual where the damage is!!!!!
+                    if(health[freq] < healthTrigger * damagePhase[freq] && visualExplodes[freq].childCount > 0)
+                    {
+                        visualExplodes[freq].GetChild(5 - damagePhase[freq]).GetComponent<ExplodeScript>().enabled = true;
+                        damagePhase[freq]--;
+                        visuals.freqBools[freq] = false;
+                    }
+                    break;
+                }
+
+                else if (health[freq] < 0)
+                {
+                    visualExplodes[freq].GetChild(5 - damagePhase[freq]).GetComponent<ExplodeScript>().enabled = true;
+                    health[freq] = 0;
+                }
             }
-        }
-        else if(health[freq] < 0)
-        {
-            health[freq] = 0;
         }
     }
 
@@ -92,32 +102,5 @@ public class HearingDamage : MonoBehaviour {
         }
 
         return total;
-    }
-
-    public void QuitCoroutine(int freq)
-    {
-        StopCoroutine(Paralization(freq));
-    }
-
-    IEnumerator Paralization(int freq)
-    {
-        yield return new WaitForSeconds(repairTime);
-        if (health[freq] > 0)
-        {
-            health[freq] += 1f;
-
-            if (health[freq] < minHealth && health[freq] <= 0)
-            {
-                StartCoroutine(Paralization(freq));
-            }
-            else
-            {
-                visuals.freqBools[freq] = false;
-            }
-        }
-        else
-        {
-            health[freq] = 0;
-        }
     }
 }

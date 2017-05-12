@@ -43,10 +43,8 @@ public class VisualFeedback : MonoBehaviour {
         while (freqBools[index])
         {
             shaderFreqs[index].color = freqColor[index];
-            Debug.Log("before");
             yield return new WaitForSeconds(0.3f);
             shaderFreqs[index].color = baseColor;
-            Debug.Log("after");
             yield return new WaitForSeconds(0.3f);
         }
         shaderFreqs[index].color = baseColor;

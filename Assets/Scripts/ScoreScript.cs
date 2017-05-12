@@ -6,7 +6,9 @@ using UnityEngine.UI;
 public class ScoreScript : MonoBehaviour {
 
     [SerializeField]
-    Text scoreText;
+    Text nonPlayerScore;
+    [SerializeField]
+    Text playerScore;
     [SerializeField]
     int score = 0;
 
@@ -20,15 +22,32 @@ public class ScoreScript : MonoBehaviour {
     [SerializeField]
     HearingDamage hearingHealth;
 
+    float possibleScore;
+
+    public float PossibleScore
+    {
+        get { return possibleScore; }
+        set { possibleScore += value; }
+    }
+    public float HearingDamage
+    {
+        get { return hearingHealth.GetTotalHearingHealth() / 10; }
+    }
+    public float Score
+    {
+        get { return score; }
+    }
+
     // Use this for initialization
     void Start () {
         hearingHealth = transform.GetChild(0).GetComponent<HearingDamage>();
-        hearing = hearingHealth.GetTotalHearingHealth() / 10;
+        hearing = hearingHealth.GetTotalHearingHealth() / 7.5f;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        scoreText.text = score.ToString();
+        nonPlayerScore.text = score.ToString();
+        playerScore.text = "SCORE\n" + score;
     }
 
     /// <summary>

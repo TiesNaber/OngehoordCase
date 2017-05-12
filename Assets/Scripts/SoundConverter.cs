@@ -13,14 +13,18 @@ public class SoundConverter : MonoBehaviour {
     Transform[] parents;
     [SerializeField]
     Color[] colors;
+    [SerializeField]
+    GameObject[] notes;
+    [SerializeField]
+    Vector3 noteRot;
 
     [SerializeField]
     private float intensDevider = 2;
 
+    //[SerializeField]
+    //private GameObject waveObject;
     [SerializeField]
-    private GameObject waveObject;
-    [SerializeField]
-    private Vector3 tempPos;
+    private Vector3 spawnPos;
 
     public bool powerUpInScene = false;
     [SerializeField]
@@ -30,14 +34,21 @@ public class SoundConverter : MonoBehaviour {
     [Range(0.075f, 0.12f)]
     float hill = 0.8f;
 
+    [SerializeField]
+    GameObject scoreBoard;
+
     void Start()
     {
-        GetComponent<AudioSource>().time = 0;
+        GetComponent<AudioSource>().time = 180;
     }
 
     void Update()
     {
-        WaveTrigger(waveObject, tempPos);
+        
+        if (GetComponent<AudioSource>().time + 1 < GetComponent<AudioSource>().clip.length)
+            WaveTrigger(spawnPos);
+        else
+            ShowScoreBoard();
     }
 
     /// <summary>
@@ -135,10 +146,10 @@ public class SoundConverter : MonoBehaviour {
     /// </summary>
     /// <param name="wave"></param>
     /// <param name="wavePos"></param>
-    void WaveTrigger(GameObject wave, Vector3 wavePos)
+    void WaveTrigger(Vector3 wavePos)
     {
         float[] freqs = Analyse();
-        float[] intens = GetIntensity();
+        //float[] intens = GetIntensity();
 
         for (int i = 0; i < 5; i++)
         {
@@ -150,12 +161,12 @@ public class SoundConverter : MonoBehaviour {
 
                 if (parents[i] == null)
                 {
-                    waveObj = NoteIntensity(1, i, wavePos, freqs[i], null);
+                    waveObj = NoteIntensity(1, i, wavePos, null);
                     waveObj.layer = 9;
                 }
                 else
                 {
-                    waveObj = NoteIntensity(1, i, wavePos, freqs[i], parents[i].GetComponent<WavePartData>());
+                    waveObj = NoteIntensity(1, i, wavePos, parents[i].GetComponent<WavePartData>());
                     waveObj.layer = 0;
                 }
 
@@ -187,6 +198,12 @@ public class SoundConverter : MonoBehaviour {
         }
     }
 
+    public void ShowScoreBoard()
+    {
+        Debug.Log("spawn scoreboard");
+        scoreBoard.SetActive(true);
+    }
+
     /// <summary>
     /// NOTE: this is obsolete we can remove this later
     /// </summary>
@@ -196,34 +213,26 @@ public class SoundConverter : MonoBehaviour {
     /// <param name="freq"></param>
     /// <param name="parent"></param>
     /// <returns></returns>
-    GameObject NoteIntensity(int type, int i, Vector3 wavePos, float freq, WavePartData parent)
+    GameObject NoteIntensity(int type, int i, Vector3 wavePos, WavePartData parent)
     {
         GameObject waveObj = null;
 
-        if(parent == null)
+        GameObject waveObject = notes[i];
+
+        if (parent == null)
         {
-            waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.identity);
+            waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.EulerAngles(noteRot));
+            GetComponent<ScoreScript>().PossibleScore = 1;
             if (type == 0)
-                waveObj.GetComponent<WavePartData>().FrequencyData = freq;
+                waveObj.GetComponent<WavePartData>().FrequencyData = i;
             else
                 waveObj.GetComponent<WavePartData>().FrequencyData = 0;
 
             return waveObj;
         }
 
-        switch(type)
-        {
-            case 0:
-                waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y - parent.FrequencyData + freq / 10 + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.identity);
-                waveObj.GetComponent<WavePartData>().FrequencyData = freq;
-                break;
-            case 1:
-                waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.identity);
-                break;
-            case 2:
-                waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.identity);
-                break;
-        }
+        waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.EulerAngles(noteRot));
+        GetComponent<ScoreScript>().PossibleScore = 1;
 
         return waveObj;
     }
