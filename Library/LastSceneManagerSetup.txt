@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/withRealInsideEar.unity
+- path: Assets/Scenes/LoadSong.unity
   isLoaded: 1
   isActive: 1
