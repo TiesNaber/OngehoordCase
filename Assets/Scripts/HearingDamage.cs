@@ -74,7 +74,7 @@ public class HearingDamage : MonoBehaviour {
 
                     visuals.freqBools[freq] = true;
 
-                    if(health[freq] < healthTrigger * damagePhase[freq] && visualExplodes[freq].childCount > 0)
+                    if(health[freq] <= healthTrigger * damagePhase[freq] && visualExplodes[freq].childCount > 0)
                     {
                         visualExplodes[freq].GetChild(5 - damagePhase[freq]).GetComponent<ExplodeScript>().enabled = true;
                         damagePhase[freq]--;
@@ -85,7 +85,8 @@ public class HearingDamage : MonoBehaviour {
 
                 else if (health[freq] < 0)
                 {
-                    visualExplodes[freq].GetChild(5 - damagePhase[freq]).GetComponent<ExplodeScript>().enabled = true;
+                    Debug.Log("explode the last part");
+                    visualExplodes[freq].GetChild(5).GetComponent<ExplodeScript>().enabled = true;
                     health[freq] = 0;
                 }
             }

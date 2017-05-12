@@ -28,6 +28,7 @@ public class ActivatePowerUp : MonoBehaviour {
             plugs.Clear();
             Debug.Log("YESS POWER UP BIATCH!");
             powerUpScript.powerUpActivated = true;
+            amountTouched = 0;
         }
 	}
 

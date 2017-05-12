@@ -11,7 +11,7 @@ public class BeltMovement : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        beltHeight = headPos.position.y / 2;
+        beltHeight = headPos.position.y - 0.5f;
         baseYRot = transform.eulerAngles.y;
 	}
 	
@@ -19,6 +19,6 @@ public class BeltMovement : MonoBehaviour {
 	void Update () {
         transform.position = new Vector3(headPos.position.x + 0.3f, headPos.position.y - beltHeight, headPos.position.z);
         //TODO: FIX THIS ROTATION
-        transform.Rotate(new Vector3(transform.rotation.x, Mathf.Clamp(headPos.eulerAngles.y, baseYRot - 40, baseYRot + 40), transform.rotation.z), Space.World);
+        //transform.Rotate(new Vector3(transform.rotation.x, Mathf.Clamp(headPos.eulerAngles.y, baseYRot - 40, baseYRot + 40), transform.rotation.z), Space.World);
 	}
 }

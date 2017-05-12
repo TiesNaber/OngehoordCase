@@ -18,8 +18,8 @@ public class ControllerScript : MonoBehaviour {
     private ushort vibrate = 2000;
     [SerializeField]
     Transform plugParent;
-    [SerializeField]
-    bool holdObject = false;
+    public bool holdObject = false;
+    Collider grabbedObject;
 
     void Awake()
     {
@@ -49,31 +49,39 @@ public class ControllerScript : MonoBehaviour {
             plug.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
         }
 
+        if(holdObject)
+        {
+            if (Controller.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
+            {
+                grabbedObject.gameObject.transform.SetParent(plugParent);
+                grabbedObject.attachedRigidbody.isKinematic = false;
+
+                TossObject(grabbedObject.attachedRigidbody);
+
+            }
+        }
+
         if (transform.childCount == 2)
             holdObject = false;
     }
 
     void OnTriggerStay(Collider col)
     {
-        if (col.tag == "Plug" && !holdObject)
+        
+
+        if (col.tag == "Plug" && !holdObject && !col.GetComponent<EarPlugBehaviour>().justHolstered)
         {
             Debug.Log("you have collided with " + col.name);
+
             if (Controller.GetTouch(SteamVR_Controller.ButtonMask.Trigger))
             {
                 
                 col.attachedRigidbody.isKinematic = true;
                 col.gameObject.transform.SetParent(gameObject.transform);
                 col.transform.localScale = new Vector3(1, 1, 1);
+                grabbedObject = col;
                 holdObject = true;
-            }
-            if (Controller.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))
-            {
-                col.gameObject.transform.SetParent(plugParent);
-                col.attachedRigidbody.isKinematic = false;
-
-                TossObject(col.attachedRigidbody);
-                
-            }
+            }            
         }
     }
 

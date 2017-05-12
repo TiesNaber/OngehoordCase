@@ -62,7 +62,7 @@ public class SoundResponseLight : MonoBehaviour {
         }
 
         if(transform.parent == null)
-            transform.localScale = new Vector3(1f , startY, 1f + (frequency[i] / 2));
+            transform.localScale = new Vector3(1f + frequency[i], startY, 1f);
     }
 
 }

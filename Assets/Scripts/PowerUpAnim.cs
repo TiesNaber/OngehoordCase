@@ -14,6 +14,7 @@ public class PowerUpAnim : MonoBehaviour {
     Quaternion startRot;
     Vector3 endRot;
     public bool powerUpActivated;
+    float vol;
 
 	// Use this for initialization
 	void Start () {
@@ -34,6 +35,7 @@ public class PowerUpAnim : MonoBehaviour {
             {
                 powerUpActivated = false;
                 reached = true;
+                return;
             }
 
             transform.Translate(dir.normalized * distThisFrame * 2.5f, Space.World);
@@ -51,7 +53,7 @@ public class PowerUpAnim : MonoBehaviour {
         if(reached)
         {
             gameManager.transform.GetChild(0).GetComponent<HearingDamage>().damped = true;
-            gameManager.GetComponent<AudioSource>().volume /= 5;
+            gameManager.GetComponent<AudioSource>().volume -= 0.1f;
             gameManager.GetComponent<SoundConverter>().enabled = false;
             StartCoroutine(timer());
             reached = false;
@@ -62,16 +64,12 @@ public class PowerUpAnim : MonoBehaviour {
     {
         yield return new WaitForSeconds(time);
 
-        for (int i = 0; i < 400; i++)
-        {
-            transform.position = new Vector3(transform.position.x, transform.position.y + Random.Range(-0.01f, 0.01f), transform.position.z + Random.Range(-0.01f, 0.01f));
-        }
-
         transform.position = path.GetChild(1).position;
         transform.rotation = startRot;
 
         gameManager.GetComponent<SoundConverter>().enabled = true;
         gameManager.transform.GetChild(0).GetComponent<HearingDamage>().damped = false;
+        
 
     }
 }

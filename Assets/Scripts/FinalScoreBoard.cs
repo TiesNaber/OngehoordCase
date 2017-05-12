@@ -61,9 +61,9 @@ public class FinalScoreBoard : MonoBehaviour {
         float damage = scoreScript.HearingDamage;
 
         Debug.Log(score / possibleScore);
-        stars.fillAmount = score / possibleScore;
+        stars.fillAmount = damage / 100 + (score / possibleScore / 5);
         scoreText.text = score.ToString();
-        percentage.text = "Gehoorschade: " + damage + "%";
+        percentage.text = "Gehoor over: " + damage + "%";
 
     }
 }
