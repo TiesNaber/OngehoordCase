@@ -5,6 +5,14 @@ using UnityEngine;
 public class EarPlugBehaviour : MonoBehaviour {
 
     public bool justHolstered;
+    public Vector3 startPos;
+    public Vector3 startRot;
+
+    void Start()
+    {
+        startPos = transform.position;
+        startRot = transform.rotation.eulerAngles;
+    }
 
 	void Update () {
 

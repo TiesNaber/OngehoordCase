@@ -1,4 +1,4 @@
 sceneSetups:
-- path: Assets/Scenes/LoadSong.unity
+- path: Assets/Scenes/SongSelection.unity
   isLoaded: 1
   isActive: 1

@@ -7,6 +7,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(AudioSource))]
 public class SoundConverter : MonoBehaviour {
 
+    // Variables for waves
     [SerializeField]
     float[] triggers;
     [SerializeField]
@@ -15,27 +16,23 @@ public class SoundConverter : MonoBehaviour {
     Color[] colors;
     [SerializeField]
     GameObject[] notes;
-    [SerializeField]
-    Vector3 noteRot;
 
-    [SerializeField]
-    private float intensDevider = 2;
-
-    //[SerializeField]
-    //private GameObject waveObject;
     [SerializeField]
     private Vector3 spawnPos;
 
+    //Variables for the power up
     public bool powerUpInScene = false;
     [SerializeField]
     GameObject powerUpObject;
 
-    [SerializeField]
-    [Range(0.075f, 0.12f)]
-    float hill = 0.8f;
-
+    //Variables for the scoreboard
     [SerializeField]
     GameObject scoreBoard;
+
+    //Variables for song data
+    int count = 0;
+    float[][] songData;
+
 
     void Start()
     {
@@ -44,9 +41,12 @@ public class SoundConverter : MonoBehaviour {
 
     void Update()
     {
-        
+
         if (GetComponent<AudioSource>().time + 1 < GetComponent<AudioSource>().clip.length)
-            WaveTrigger(spawnPos);
+        {
+            WaveTrigger(spawnPos, count);
+            count++;
+        }
         else
             ShowScoreBoard();
     }
@@ -89,25 +89,6 @@ public class SoundConverter : MonoBehaviour {
         return freqs;
     }
 
-    /// <summary>
-    /// Returns the intensity of each frequentie 
-    /// </summary>
-    /// <returns>Array of intensities</returns>
-    public float[] GetIntensity()
-    {
-        float[] spectrum = new float[1024];
-
-        AudioListener.GetOutputData(spectrum, 0);
-        float[] intens = new float[5];
-
-        intens[0] = (spectrum[2] + spectrum[3] + spectrum[4]) / intensDevider;
-        intens[1] = (spectrum[5] + spectrum[6] + spectrum[7]) / intensDevider;
-        intens[2] = (spectrum[11] + spectrum[12] + spectrum[13]) / intensDevider;
-        intens[3] = (spectrum[23] + spectrum[24] + spectrum[25]) / intensDevider;
-        intens[4] = (spectrum[44] + spectrum[45] + spectrum[46] + spectrum[47] + spectrum[48] + spectrum[49]) / intensDevider;
-
-        return intens;
-    }
 
     /// <summary>
     /// Spawns a power up on the wave
@@ -146,7 +127,7 @@ public class SoundConverter : MonoBehaviour {
     /// </summary>
     /// <param name="wave"></param>
     /// <param name="wavePos"></param>
-    void WaveTrigger(Vector3 wavePos)
+    void WaveTrigger(Vector3 wavePos, int index)
     {
         float[] freqs = Analyse();
         //float[] intens = GetIntensity();
@@ -156,31 +137,27 @@ public class SoundConverter : MonoBehaviour {
             if (freqs[i] > triggers[i])
             {
                 StopCoroutine(ParentNuller(i));
-                //GameObject waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + intens[i] / 10 + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.identity);
                 GameObject waveObj = null;
 
                 if (parents[i] == null)
                 {
-                    waveObj = NoteIntensity(1, i, wavePos, null);
+                    waveObj = SpawnWave(1, i, wavePos);
                     waveObj.layer = 9;
                 }
                 else
                 {
-                    waveObj = NoteIntensity(1, i, wavePos, parents[i].GetComponent<WavePartData>());
+                    waveObj = SpawnWave(1, i, wavePos);
                     waveObj.layer = 0;
                 }
 
                 waveObj.GetComponent<MeshRenderer>().material.color = colors[i];
-                waveObj.GetComponent<MeshRenderer>().material.SetColor("_EmissionColor", colors[i]);
 
-                // waveObj.GetComponent<Light>().color = colors[i];
                 waveObj.GetComponent<Movement>().myFreq = i;
                 waveObj.tag = "freq" + (i + 1);
                 SpawnPowerUp(waveObj.transform);
 
                 if (parents[i] != null)
                 {
-                    float difference = parents[i].GetComponent<WavePartData>().FrequencyData;
                     waveObj.transform.parent = parents[i];
                     waveObj.transform.position = new Vector3(parents[i].position.x - 0.1f, parents[i].root.transform.position.y - 0.01f /*+ intens[i] / 10*/, parents[i].root.transform.position.z);
                     parents[i] = waveObj.transform;
@@ -213,25 +190,13 @@ public class SoundConverter : MonoBehaviour {
     /// <param name="freq"></param>
     /// <param name="parent"></param>
     /// <returns></returns>
-    GameObject NoteIntensity(int type, int i, Vector3 wavePos, WavePartData parent)
+    GameObject SpawnWave(int type, int i, Vector3 wavePos)
     {
         GameObject waveObj = null;
 
         GameObject waveObject = notes[i];
 
-        if (parent == null)
-        {
-            waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.EulerAngles(noteRot));
-            GetComponent<ScoreScript>().PossibleScore = 1;
-            if (type == 0)
-                waveObj.GetComponent<WavePartData>().FrequencyData = i;
-            else
-                waveObj.GetComponent<WavePartData>().FrequencyData = 0;
-
-            return waveObj;
-        }
-
-        waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.EulerAngles(noteRot));
+        waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.EulerAngles(-90, 90, 0));
         GetComponent<ScoreScript>().PossibleScore = 1;
 
         return waveObj;

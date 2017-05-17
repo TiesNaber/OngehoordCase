@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ButtonScript : MonoBehaviour {
 
@@ -11,30 +12,21 @@ public class ButtonScript : MonoBehaviour {
     bool seeing = false;
     public Text songName;
 
-    
-   
-    
-
     [SerializeField]
     AudioSource audio;
+    [SerializeField]
+    ActivatePowerUp earProtected;
 
-   
-
-
-
-
-    // Use this for initialization
-   void Start ()
+    RaycastHit lookAt;
+    public RaycastHit LookAt
     {
-        
-	}
-
-    
+        get { return lookAt; }
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        RaycastHit lookAt;
+        
         Ray rayDir = new Ray((transform.position), transform.forward);
 
         Debug.DrawRay(transform.position, transform.forward * lookingLength, Color.red);
@@ -42,28 +34,29 @@ public class ButtonScript : MonoBehaviour {
         {                        
             if (lookAt.collider.gameObject.tag == "Button" && !lookAt.collider.GetComponent<AudioSource>().isPlaying)
             {
-                Debug.Log("found one");
-
                 audio = lookAt.collider.GetComponent<AudioSource>();
                 audio.time = 30;
                 audio.Play();
-                Debug.Log(audio.clip);
-               
-                Debug.Log("Looking");
                 audio.enabled = true;
-
+                GameManager.GM.ArrayIndex = audio.GetComponent<SongIndex>().Index;
+            }
+            else if (lookAt.collider.gameObject.tag == "Button" && lookAt.collider.GetComponent<AudioSource>().isPlaying)
+            {
+                if (earProtected.SelectedSong)
+                {
+                    SceneManager.LoadScene("MainGame");
+                }
             }
         }
-
         else
         {
-            Debug.Log("lost");
             if (audio != null)
             {
                 audio.enabled = false;
                 audio = null;
-
             } 
         }
+
+
     }
 }

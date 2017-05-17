@@ -18,14 +18,8 @@ public class SongLoader : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         songs = Resources.LoadAll("Songs");
-        radius = songs.Length;
 
         DrawCircle();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-
 	}
 
     /// <summary>
@@ -36,13 +30,14 @@ public class SongLoader : MonoBehaviour {
         for (int i = 0; i < songs.Length; i++)
         {
             float angle = i * Mathf.PI * 2 / songs.Length;
-            Vector3 pos = new Vector3( Mathf.Cos(angle), 0.1f, Mathf.Sin(angle)) * (radius / 2);
-            GameObject cube = (GameObject)Instantiate(cover, pos, Quaternion.identity);
-            cube.transform.LookAt(player);
-            cube.transform.parent = coverCircle.transform;
-            cube.AddComponent<AudioSource>();
-            cube.GetComponent<AudioSource>().playOnAwake = false;
-            cube.GetComponent<AudioSource>().clip = (AudioClip)songs[i];
+            Vector3 pos = new Vector3( Mathf.Cos(angle), 0.5f, Mathf.Sin(angle)) * radius;
+            GameObject ear = (GameObject)Instantiate(cover, pos, Quaternion.identity);
+            ear.transform.LookAt(player);
+            ear.transform.parent = coverCircle.transform;
+            ear.AddComponent<AudioSource>();
+            ear.GetComponent<AudioSource>().playOnAwake = false;
+            ear.GetComponent<AudioSource>().clip = (AudioClip)songs[i];
+            ear.GetComponent<SongIndex>().Index = i;
         }
     }
 }

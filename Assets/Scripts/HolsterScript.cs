@@ -5,10 +5,12 @@ using UnityEngine;
 public class HolsterScript : MonoBehaviour {
 
     bool holstered;
+    [SerializeField]
+    bool gameScene;
 
     private void OnTriggerEnter(Collider col)
     {
-        if(col.tag == "Plug" && !holstered && col.transform.parent.GetComponent<ControllerScript>())
+        if(col.tag == "Plug" && ((!holstered && col.transform.parent.GetComponent<ControllerScript>()) || !gameScene))
         {
             Debug.Log("holstered");
             col.transform.parent.GetComponent<ControllerScript>().holdObject = false;
