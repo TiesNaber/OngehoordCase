@@ -28,6 +28,8 @@ public class SoundConverter : MonoBehaviour {
     //Variables for the scoreboard
     [SerializeField]
     GameObject scoreBoard;
+    [SerializeField]
+    Transform spectatorScreens;
 
     //Variables for song data
     int count = 0;
@@ -36,7 +38,7 @@ public class SoundConverter : MonoBehaviour {
 
     void Awake()
     {
-        GetComponent<AudioSource>().time = 0;
+        GetComponent<AudioSource>().time = 200;
         songData = GameManager.GM.Song;
         triggers = GameManager.GM.Triggers;
     }
@@ -90,15 +92,26 @@ public class SoundConverter : MonoBehaviour {
 
         for (int i = 0; i < 5; i++)
         {
-            if (lastFreqs[i] < triggers[i] && nextFreqs[i] < triggers[i])
+            if (currentFreqs[i] > triggers[i])
             {
-                parents[i] = null;
-                break;
+                if (lastFreqs[i] > triggers[i] && parents[i] != null)
+                {
+                    SpawnWave(parents[i], i);
+                    break;
+                }
+                else if (nextFreqs[i] > triggers[i])
+                {
+                    SpawnWave(parents[i], i);
+                    break;
+                }
+                else if (lastFreqs[i] < triggers[i] && nextFreqs[i] < triggers[i])
+                {
+                    parents[i] = null;
+                    break;
+                }
             }
             else
-                SpawnWave(parents[i], i);
-
-            
+                parents[i] = null;
         }
     }
 
@@ -106,6 +119,8 @@ public class SoundConverter : MonoBehaviour {
     {
         Debug.Log("spawn scoreboard");
         scoreBoard.SetActive(true);
+        spectatorScreens.GetChild(0).gameObject.SetActive(false);
+        spectatorScreens.GetChild(1).gameObject.SetActive(true);
     }
 
     /// <summary>
@@ -132,6 +147,7 @@ public class SoundConverter : MonoBehaviour {
         parents[i] = waveObj.transform;
         waveObj.GetComponent<MeshRenderer>().material.color = colors[i];
         waveObj.GetComponent<Movement>().myFreq = i;
+        SpawnPowerUp(waveObj.transform);
 
         return waveObj;
     }

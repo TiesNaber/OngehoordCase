@@ -34,10 +34,19 @@ public class GameManager : MonoBehaviour {
     }
 
     private string _class;
-    public string Class
+    private List<string> _classes = new List<string>();
+    public string CurrentClass
     {
-        set { _class = value; }
+        set
+        {
+            _class = value;
+            _classes.Add(_class);
+        }
         get { return _class; }
+    }
+    public List<string> Classes
+    {
+        get { return _classes; }
     }
 
     private string _name;
@@ -50,7 +59,7 @@ public class GameManager : MonoBehaviour {
     private int _dbIndex;
     public int DBIndex
     {
-        set { _dbIndex = value; }
+        set { _dbIndex += value; }
         get { return _dbIndex; }
     }
 
@@ -67,6 +76,15 @@ public class GameManager : MonoBehaviour {
         set { arrayIndex = value; }
         get { return arrayIndex; }
     }
+
+    private int inputPhase = 0;
+    public int InputPhase
+    {
+        get { return inputPhase; }
+        set { inputPhase = value; }
+    }
+
+    public bool insert;
 
 
 

@@ -12,8 +12,7 @@ public class TextInputManager : MonoBehaviour {
 	string conn;
 	IDbConnection dbconn;
 	SqliteCommand command;
-
-	public int inputPhase = 0;
+    
 	string inputText;
 	[SerializeField]
 	Text infoText;
@@ -25,45 +24,55 @@ public class TextInputManager : MonoBehaviour {
 	[SerializeField]
 	GameObject inputTypeTwo;
 
+    public bool insert;
+
 	// Use this for initialization
 	void Start () {
 		conn = "URI=file://Assets/Database/Database.s3db"; // path to database
 		dbconn = (IDbConnection)new SqliteConnection(conn); // database connection
-		infoText.text = "School";
+        switch(GameManager.GM.InputPhase)
+        {
+            case 0:
+                infoText.text = "School";
+                break;
+            case 1:
+                infoText.text = "Klas";
+                break;
+            case 2:
+                infoText.text = "Naam";
+                break;
+        }
+        
 		inputTypeOne.SetActive(true);
 		inputTypeTwo.SetActive(false);
 
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
 	public void OnSubmit()
 	{
-		InsertDatabase(inputField.text, true);
+		InsertDatabase(inputField.text, true, insert);
 	}
 
 	public void ChooseGender(bool female)
 	{
-		InsertDatabase(null, female);
+		InsertDatabase(null, female, insert);
 	}
 
-	void InsertDatabase(string input, bool buttonInput)
+	void InsertDatabase(string input, bool buttonInput, bool inserting)
 	{
-		switch(inputPhase)
+		switch(GameManager.GM.InputPhase)
 		{
 			case 0:
 				OpenConnection();
-				string sql = "create table if not exists " + input + " (id INT, class CHAR(10), name CHAR(20), score INT)";
+                string sql = null;
+                sql = "create table if not exists " + input + " (id INT, class CHAR(10), name CHAR(20), score INT)";
 				command = new SqliteCommand(sql, (SqliteConnection)dbconn);
 				command.ExecuteNonQuery();
 				CloseConnection();
 
 				GameManager.GM.School = input;
-				inputPhase++;
-				infoText.text = "Klas";
+                GameManager.GM.InputPhase = 1;
+                infoText.text = "Klas";
 				inputField.text = null;
 				break;
 			case 1:
@@ -74,21 +83,25 @@ public class TextInputManager : MonoBehaviour {
 				command.ExecuteNonQuery();
 				CloseConnection();
 
-				GameManager.GM.Class = input;
-				inputPhase++;
-				infoText.text = "Naam";
+				GameManager.GM.CurrentClass = input;
+                GameManager.GM.InputPhase = 2;
+                infoText.text = "Naam";
 				inputField.text = null;
 				break;
 			case 2:
 				OpenConnection();
-				sql = "insert into " + GameManager.GM.School + " (id, name) values (" + GameManager.GM.DBIndex + ", '" + input + "')";
+                if (!GameManager.GM.insert)
+                    sql = "update " + GameManager.GM.School + " set name = '" + input + "' where id = '" + GameManager.GM.DBIndex + "'";
+                else
+                    sql = "insert into " + GameManager.GM.School + " (id, class, name) values (" + GameManager.GM.DBIndex + ", '" + GameManager.GM.CurrentClass + "', '"+ input +"')";
 				command = new SqliteCommand(sql, (SqliteConnection)dbconn);
 				command.ExecuteNonQuery();
 				CloseConnection();
 
 				GameManager.GM.Name = input;
-				inputPhase++;
-				inputTypeOne.SetActive(false);
+                GameManager.GM.InputPhase = 3;
+                infoText.text = "Geslacht";
+                inputTypeOne.SetActive(false);
 				inputTypeTwo.SetActive(true);
 				break;
 			case 3:
@@ -102,19 +115,19 @@ public class TextInputManager : MonoBehaviour {
 	{
 		if(female)
 		{
-			inputTypeTwo.transform.GetChild(0).gameObject.SetActive(false);
+			inputTypeTwo.transform.GetChild(1).gameObject.SetActive(false);
 			Vector3 pos = inputTypeTwo.transform.GetChild(1).position;
-			inputTypeTwo.transform.GetChild(1).position = new Vector3(pos.x - 100, pos.y, pos.z);
+			inputTypeTwo.transform.GetChild(0).position = new Vector3(pos.x - 100, pos.y, pos.z);
 		}
 		else
 		{
-			inputTypeTwo.transform.GetChild(1).gameObject.SetActive(false);
+			inputTypeTwo.transform.GetChild(0).gameObject.SetActive(false);
 			Vector3 pos = inputTypeTwo.transform.GetChild(0).position;
-			inputTypeTwo.transform.GetChild(0).position = new Vector3(pos.x + 100, pos.y, pos.z);
+			inputTypeTwo.transform.GetChild(1).position = new Vector3(pos.x + 100, pos.y, pos.z);
 		}
 		yield return new WaitForSeconds(2);
 
-		GameManager.GM.ArrayIndex = 0;
+		GameManager.GM.ArrayIndex = 1;
 		SceneManager.LoadScene("MainGame");
 	}
 

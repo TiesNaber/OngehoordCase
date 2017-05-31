@@ -184,8 +184,6 @@ public class LoadSong : MonoBehaviour {
         return triggerData;
     }
 
-
-
     void CloseConnection()
     {
         if(dbconn.State == ConnectionState.Open)

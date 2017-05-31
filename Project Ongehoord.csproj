@@ -188,6 +188,8 @@
     <Compile Include="Assets\Import\SteamVR\Scripts\SteamVR_TrackedObject.cs" />
     <Compile Include="Assets\Import\SteamVR\Scripts\SteamVR_UpdatePoses.cs" />
     <Compile Include="Assets\Import\SteamVR\Scripts\SteamVR_Utils.cs" />
+    <Compile Include="Assets\SceneSwitching.cs" />
+    <Compile Include="Assets\ScoreSpectators.cs" />
     <Compile Include="Assets\Scripts\ActivatePowerUp.cs" />
     <Compile Include="Assets\Scripts\BeltMovement.cs" />
     <Compile Include="Assets\Scripts\ButtonScript.cs" />
@@ -214,6 +216,7 @@
     <Compile Include="Assets\Scripts\SwitchState.cs" />
     <Compile Include="Assets\Scripts\TextInputManager.cs" />
     <Compile Include="Assets\Scripts\VisualFeedback.cs" />
+    <Compile Include="Assets\ShowFinalists.cs" />
     <Compile Include="Assets\SongIndex.cs" />
   </ItemGroup>
   <ItemGroup>
