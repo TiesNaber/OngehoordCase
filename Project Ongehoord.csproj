@@ -211,7 +211,6 @@
     <Compile Include="Assets\Scripts\ScoreScript.cs" />
     <Compile Include="Assets\Scripts\SongLoader.cs" />
     <Compile Include="Assets\Scripts\SoundConverter.cs" />
-    <Compile Include="Assets\Scripts\SoundResponseLight.cs" />
     <Compile Include="Assets\Scripts\SwitchState.cs" />
     <Compile Include="Assets\Scripts\TextInputManager.cs" />
     <Compile Include="Assets\Scripts\VisualFeedback.cs" />

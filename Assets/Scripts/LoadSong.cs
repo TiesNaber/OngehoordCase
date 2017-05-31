@@ -23,7 +23,7 @@ public class LoadSong : MonoBehaviour {
     bool extracting;
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
         songData = new List<float[]>();
         conn = "URI=file://Assets/Database/MusicDatabase.s3db"; // path to database
         dbconn = (IDbConnection)new SqliteConnection(conn); // database connection
@@ -101,13 +101,19 @@ public class LoadSong : MonoBehaviour {
                 }
             }
 
-            Debug.Log("out for loop");
             CloseConnection();
-
-
-
-            Debug.Log("Data storage ended");
         }
+    }
+
+    public void StoreTriggers(float[] triggers, int index)
+    {
+        OpenConnection();
+
+        string sql = "insert into Triggers (id, freq1Trigger, freq2Trigger, freq3Trigger, freq4Trigger, freq5Trigger) values (" + index + ", " + triggers[0].ToString() + ", " + triggers[1].ToString() + ", " + triggers[2].ToString() + ", " + triggers[3].ToString() + ", " + triggers[4].ToString() + ")";
+        command = new SqliteCommand(sql, (SqliteConnection)dbconn);
+        command.ExecuteNonQuery();
+
+        CloseConnection();
     }
 
     public List<float[]> ExtractData(string songName)
@@ -190,6 +196,7 @@ public class LoadSong : MonoBehaviour {
 
     void OpenConnection()
     {
+        Debug.Log(dbconn);
         if (dbconn.State == ConnectionState.Closed)
         {
             dbconn.Open();

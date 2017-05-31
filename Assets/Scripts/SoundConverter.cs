@@ -31,12 +31,14 @@ public class SoundConverter : MonoBehaviour {
 
     //Variables for song data
     int count = 0;
-    float[][] songData;
+    List<float[]> songData;
 
 
-    void Start()
+    void Awake()
     {
-        GetComponent<AudioSource>().time = 200;
+        GetComponent<AudioSource>().time = 0;
+        songData = GameManager.GM.Song;
+        triggers = GameManager.GM.Triggers;
     }
 
     void Update()
@@ -44,51 +46,12 @@ public class SoundConverter : MonoBehaviour {
 
         if (GetComponent<AudioSource>().time + 1 < GetComponent<AudioSource>().clip.length)
         {
-            WaveTrigger(spawnPos, count);
+            WaveTrigger(count);
             count++;
         }
         else
             ShowScoreBoard();
     }
-
-    /// <summary>
-    /// Analysis the sound and gets the 5 frequenties we want
-    /// </summary>
-    /// <returns>Array of frequenties</returns>
-    public float[] Analyse()
-    {
-        /*
-         * 22050 / array length = i;
-         * 
-         * freqx / i;
-         * 
-         * freq1= 64hz
-         * freq2= 128hz
-         * freq3= 256hz
-         * freq4= 512hz
-         * freq5= 1024hz
-         * */
-        float[] spectrum = new float[1024];
-
-        AudioListener.GetSpectrumData(spectrum, 0, FFTWindow.Hamming);
-        float[] freqs = new float[5];
-
-        freqs[0] = spectrum[2] + spectrum[3] + spectrum[4];
-        freqs[1] = spectrum[5] + spectrum[6] + spectrum[7];
-        freqs[2] = spectrum[11] + spectrum[12] + spectrum[13];
-        freqs[3] = spectrum[23] + spectrum[24] + spectrum[25];
-        freqs[4] = spectrum[44] + spectrum[45] + spectrum[46] + spectrum[47] + spectrum[48] + spectrum[49];
-
-        /*Debug.Log("freq1:   " + freqs[0] +
-                    "   freq2:   " + freqs[1] +
-                    "   freq3:   " + freqs[2] +
-                    "   freq4:   " + freqs[3] +
-                    "   freq5:   " + freqs[4]);
-                    */
-
-        return freqs;
-    }
-
 
     /// <summary>
     /// Spawns a power up on the wave
@@ -111,67 +74,31 @@ public class SoundConverter : MonoBehaviour {
     }
 
     /// <summary>
-    /// Sets the parent to null so new waves will appear
-    /// </summary>
-    /// <param name="freq">The frequency it is in</param>
-    /// <returns></returns>
-    IEnumerator ParentNuller(int freq)
-    {
-        yield return new WaitForSeconds(2f);
-        parents[freq] = null;
-    }
-
-    /// <summary>
     /// checks if the frequenty is high enoughto spawn a wave
     /// NOTE: change this because this is way to long!
     /// </summary>
     /// <param name="wave"></param>
     /// <param name="wavePos"></param>
-    void WaveTrigger(Vector3 wavePos, int index)
+    void WaveTrigger(int index)
     {
-        float[] freqs = Analyse();
-        //float[] intens = GetIntensity();
+        float[] lastFreqs = new float[5];
+        if (index > 0)
+             lastFreqs = songData[index - 1];
+
+        float[] currentFreqs = songData[index];
+        float[] nextFreqs = songData[index + 1];
 
         for (int i = 0; i < 5; i++)
         {
-            if (freqs[i] > triggers[i])
+            if (lastFreqs[i] < triggers[i] && nextFreqs[i] < triggers[i])
             {
-                StopCoroutine(ParentNuller(i));
-                GameObject waveObj = null;
-
-                if (parents[i] == null)
-                {
-                    waveObj = SpawnWave(1, i, wavePos);
-                    waveObj.layer = 9;
-                }
-                else
-                {
-                    waveObj = SpawnWave(1, i, wavePos);
-                    waveObj.layer = 0;
-                }
-
-                waveObj.GetComponent<MeshRenderer>().material.color = colors[i];
-
-                waveObj.GetComponent<Movement>().myFreq = i;
-                waveObj.tag = "freq" + (i + 1);
-                SpawnPowerUp(waveObj.transform);
-
-                if (parents[i] != null)
-                {
-                    waveObj.transform.parent = parents[i];
-                    waveObj.transform.position = new Vector3(parents[i].position.x - 0.1f, parents[i].root.transform.position.y - 0.01f /*+ intens[i] / 10*/, parents[i].root.transform.position.z);
-                    parents[i] = waveObj.transform;
-                }
-                else
-                {
-                    parents[i] = waveObj.transform;
-                }
-
+                parents[i] = null;
+                break;
             }
             else
-            {
-                StartCoroutine(ParentNuller(i));
-            }
+                SpawnWave(parents[i], i);
+
+            
         }
     }
 
@@ -182,22 +109,29 @@ public class SoundConverter : MonoBehaviour {
     }
 
     /// <summary>
-    /// NOTE: this is obsolete we can remove this later
+    /// Creates the wave object
     /// </summary>
-    /// <param name="type"></param>
     /// <param name="i"></param>
-    /// <param name="wavePos"></param>
-    /// <param name="freq"></param>
     /// <param name="parent"></param>
     /// <returns></returns>
-    GameObject SpawnWave(int type, int i, Vector3 wavePos)
+    GameObject SpawnWave(Transform parent, int i)
     {
         GameObject waveObj = null;
 
         GameObject waveObject = notes[i];
 
-        waveObj = (GameObject)Instantiate(waveObject, new Vector3(wavePos.x, wavePos.y + Random.Range(-0.8f, 0.6f), wavePos.z + Random.Range(-1f, 1f)), Quaternion.EulerAngles(-90, 90, 0));
+        if (parent == null)
+            waveObj = (GameObject)Instantiate(waveObject, new Vector3(spawnPos.x, spawnPos.y + Random.Range(-0.8f, 0.6f), spawnPos.z + Random.Range(-1f, 1f)), Quaternion.EulerAngles(-90, 90, 0));
+        else
+        {
+            waveObj = (GameObject)Instantiate(waveObject, new Vector3(parent.position.x - 0.2f, parent.position.y, parent.position.z), Quaternion.EulerAngles(-90, 90, 0));
+            waveObj.transform.SetParent(parent);
+        }
+
         GetComponent<ScoreScript>().PossibleScore = 1;
+        parents[i] = waveObj.transform;
+        waveObj.GetComponent<MeshRenderer>().material.color = colors[i];
+        waveObj.GetComponent<Movement>().myFreq = i;
 
         return waveObj;
     }

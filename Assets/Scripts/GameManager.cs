@@ -12,12 +12,18 @@ public class GameManager : MonoBehaviour {
     string[] songName;
 
     List<List<float[]>> songs;
+    public List<float[]> Song
+    {
+        get { return songs[arrayIndex]; }
+    }
     List<float[]> triggers;
+    public float[] Triggers
+    {
+        get { return triggers[arrayIndex]; }
+    }
 
     [SerializeField]
     LoadSong db;
-    [SerializeField]
-    Image loadBar;
 
     //Getter/Setter
     private string _school;
