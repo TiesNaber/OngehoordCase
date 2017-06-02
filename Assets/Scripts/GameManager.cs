@@ -22,6 +22,17 @@ public class GameManager : MonoBehaviour {
         get { return triggers[arrayIndex]; }
     }
 
+    List<float[]> finalSong;
+    public List<float[]> FinalSong {
+        get { return finalSong; }
+        set { finalSong = value; }
+    }
+    float[] finalTriggers;
+    public float[] FinalTriggers {
+        get { return finalTriggers; }
+        set { finalTriggers = value; }
+    }
+
     [SerializeField]
     LoadSong db;
 
@@ -85,6 +96,7 @@ public class GameManager : MonoBehaviour {
     }
 
     public bool insert;
+    public bool finals;
 
 
 
@@ -114,6 +126,22 @@ public class GameManager : MonoBehaviour {
         }
     }
 
+    public List<float[]> GetSong()
+    {
+        if (!finals)
+            return Song;
+        else
+            return FinalSong;
+    }
+
+    public float[] GetTriggers()
+    {
+        if (!finals)
+            return Triggers;
+        else
+            return FinalTriggers;
+    }
+
     IEnumerator Setup()
     {
         yield return new WaitForSeconds(1);
@@ -125,6 +153,9 @@ public class GameManager : MonoBehaviour {
             songs.Add(db.ExtractData(songName[i]));
             triggers.Add(db.ExtractTriggerData("Triggers", i));
         }
+
+        FinalSong = db.ExtractData("FinalsSong");
+        FinalTriggers = db.ExtractTriggerData("Triggers", 10);
 
         yield return new WaitForSeconds(1);
         SceneManager.LoadScene("SetupHighscoreData");

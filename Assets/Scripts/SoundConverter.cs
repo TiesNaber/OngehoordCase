@@ -39,8 +39,8 @@ public class SoundConverter : MonoBehaviour {
     void Awake()
     {
         GetComponent<AudioSource>().time = 200;
-        songData = GameManager.GM.Song;
-        triggers = GameManager.GM.Triggers;
+        songData = GameManager.GM.GetSong();
+        triggers = GameManager.GM.GetTriggers();
     }
 
     void Update()

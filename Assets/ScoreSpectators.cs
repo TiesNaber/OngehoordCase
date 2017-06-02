@@ -17,6 +17,11 @@ public class ScoreSpectators : MonoBehaviour {
     [SerializeField]
     Text percentage;
 
+    [SerializeField]
+    GameObject buttons;
+    [SerializeField]
+    GameObject finalsButton;
+
     string conn;
     IDbConnection dbconn;
     SqliteCommand command;
@@ -26,6 +31,11 @@ public class ScoreSpectators : MonoBehaviour {
     void Start () {
         conn = "URI=file://Assets/Database/Database.s3db"; // path to database
         dbconn = (IDbConnection)new SqliteConnection(conn); // database connection
+        if(GameManager.GM.finals)
+        {
+            finalsButton.SetActive(true);
+            buttons.SetActive(false);
+        }
         ShowScore();
         InsertIntoDatabase();
 	}

@@ -7,7 +7,6 @@ public class SceneSwitching : MonoBehaviour {
 
 	public void NextPlayer()
     {
-        Debug.Log("start next player");
         GameManager.GM.DBIndex = 1;
         GameManager.GM.InputPhase = 2;
         GameManager.GM.insert = true;
@@ -17,7 +16,6 @@ public class SceneSwitching : MonoBehaviour {
 
     public void NextClass()
     {
-        Debug.Log("start next class");
         GameManager.GM.DBIndex = 1;
         GameManager.GM.InputPhase = 1;
         GameManager.GM.insert = false;
@@ -26,7 +24,12 @@ public class SceneSwitching : MonoBehaviour {
 
     public void StartFinals()
     {
-        Debug.Log("moet er nog in komen");
+        SceneManager.LoadScene("FinaleScene");
+    }
+
+    public void NextFinalist()
+    {
+        FinalsManager.instance.changeRanking = true;
         SceneManager.LoadScene("FinaleScene");
     }
 }

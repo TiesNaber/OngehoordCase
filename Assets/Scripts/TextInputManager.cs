@@ -65,7 +65,7 @@ public class TextInputManager : MonoBehaviour {
 			case 0:
 				OpenConnection();
                 string sql = null;
-                sql = "create table if not exists " + input + " (id INT, class CHAR(10), name CHAR(20), score INT)";
+                sql = "create table if not exists " + input + " (id INT, class CHAR(10), name CHAR(20), score INT, finalsScore INT)";
 				command = new SqliteCommand(sql, (SqliteConnection)dbconn);
 				command.ExecuteNonQuery();
 				CloseConnection();
@@ -77,7 +77,7 @@ public class TextInputManager : MonoBehaviour {
 				break;
 			case 1:
 				OpenConnection();
-				sql = "insert into " + GameManager.GM.School + " (id, class) values (" + GameManager.GM.DBIndex + ", '" + input + "')";
+				sql = "insert into " + GameManager.GM.School + " (id, class, finalsScore) values (" + GameManager.GM.DBIndex + ", '" + input + "', '0')";
 				Debug.Log(sql);
 				command = new SqliteCommand(sql, (SqliteConnection)dbconn);
 				command.ExecuteNonQuery();

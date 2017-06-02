@@ -38,7 +38,7 @@ public class CreateTriggers : MonoBehaviour {
 				if (j == songData.Count - 1)
 				{
 					float a = sum / songData.Count;
-                    triggers[i] = a * 2;
+                    triggers[i] = a * 1.5f;
 				}
 			}
             Debug.Log(sum/songData.Count);
