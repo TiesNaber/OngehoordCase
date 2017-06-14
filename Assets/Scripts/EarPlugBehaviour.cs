@@ -3,26 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EarPlugBehaviour : MonoBehaviour {
-
-    public bool justHolstered;
+    
     public Vector3 startPos;
     public Vector3 startRot;
+    public Transform startParent;
+    public bool selectionScene;
+    public bool holstered;
 
     void Start()
     {
-        startPos = transform.position;
+        startPos = transform.localPosition;
         startRot = transform.rotation.eulerAngles;
+        startParent = transform.parent;
     }
 
 	void Update () {
 
-        if (transform.parent == null)
-            StartCoroutine(StillNull());
+        if (selectionScene && transform.parent == null)
+            StartCoroutine(ResetPos());
 
-        if(justHolstered)
-        {
-            StartCoroutine(Holstered());
-        }
+        if (transform.parent == null && !selectionScene)
+            StartCoroutine(StillNull());
 	}
 
     IEnumerator StillNull()
@@ -33,9 +34,11 @@ public class EarPlugBehaviour : MonoBehaviour {
             Destroy(gameObject);
     }
 
-    IEnumerator Holstered()
+    IEnumerator ResetPos()
     {
-        yield return new WaitForSeconds(1f);
-        justHolstered = false;
+        yield return new WaitForSeconds(1);
+        transform.SetParent(startParent);
+        transform.localPosition = startPos;
+        transform.rotation = Quaternion.Euler(startRot);
     }
 }

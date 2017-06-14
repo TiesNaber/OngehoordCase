@@ -21,6 +21,11 @@ public class ControllerScript : MonoBehaviour {
     public bool holdObject = false;
     Collider grabbedObject;
 
+    [SerializeField]
+    HolsterScript holsterScript;
+    [SerializeField]
+    MainGameInfo mainInfo;
+
     void Awake()
     {
         trackedObj = GetComponent<SteamVR_TrackedObject>();
@@ -68,8 +73,19 @@ public class ControllerScript : MonoBehaviour {
     void OnTriggerStay(Collider col)
     {
         
+        if(col.tag == "Plug" && !col.GetComponent<EarPlugBehaviour>().holstered)
+        {
+            holsterScript.SetPlug(col.gameObject);
+            col.GetComponent<EarPlugBehaviour>().holstered = true;
+        }
 
-        if (col.tag == "Plug" && !holdObject && !col.GetComponent<EarPlugBehaviour>().justHolstered)
+        if(col.tag == "InfoPlug")
+        {
+            mainInfo.LastSound();
+            col.gameObject.SetActive(false);
+        }
+
+        if (col.tag == "Plug" && !holdObject && col.GetComponent<EarPlugBehaviour>().holstered)
         {
             Debug.Log("you have collided with " + col.name);
 
@@ -78,7 +94,7 @@ public class ControllerScript : MonoBehaviour {
                 
                 col.attachedRigidbody.isKinematic = true;
                 col.gameObject.transform.SetParent(gameObject.transform);
-                col.transform.localScale = new Vector3(1, 1, 1);
+                col.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
                 grabbedObject = col;
                 holdObject = true;
             }            

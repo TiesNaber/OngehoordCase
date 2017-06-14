@@ -4,29 +4,30 @@ using UnityEngine;
 
 public class HolsterScript : MonoBehaviour {
 
-    bool holstered;
     [SerializeField]
     bool gameScene;
 
-    private void OnTriggerEnter(Collider col)
+    public void SetPlug(GameObject plug)
     {
-        if(col.tag == "Plug" && ((!holstered && col.transform.parent.GetComponent<ControllerScript>()) || !gameScene))
+        if(transform.GetChild(0).childCount == 0)
         {
-            Debug.Log("holstered");
-            col.transform.parent.GetComponent<ControllerScript>().holdObject = false;
-            col.GetComponent<EarPlugBehaviour>().justHolstered = true;
-            col.transform.parent = this.transform;
-            col.transform.position = transform.position;
-            col.transform.rotation = Quaternion.Euler(-90, 0, 0);
-            holstered = true;
+            Transform parent = transform.GetChild(0);
+            plug.GetComponent<Rigidbody>().isKinematic = true;
+            plug.transform.parent = parent;
+            plug.transform.position = parent.position;
+            plug.transform.rotation = Quaternion.Euler(-90, 0, 0);
         }
-    }
-
-    private void OnTriggerExit(Collider col)
-    {
-        if(col.tag == "Plug")
+        else if(transform.GetChild(1).childCount == 0)
         {
-            holstered = false;
+            Transform parent = transform.GetChild(1);
+            plug.GetComponent<Rigidbody>().isKinematic = true;
+            plug.transform.parent = parent;
+            plug.transform.position = parent.position;
+            plug.transform.rotation = Quaternion.Euler(-90, 0, 0);
+        }
+        else
+        {
+            Debug.Log("already have two");
         }
     }
 }

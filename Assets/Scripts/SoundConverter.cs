@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 
@@ -31,28 +32,25 @@ public class SoundConverter : MonoBehaviour {
     [SerializeField]
     Transform spectatorScreens;
 
+    //Analytics stuff 
+    [SerializeField]
+    ScoreScript scoreScript;
+    [SerializeField]
+    AnalyticsScript analytics;
+
     //Variables for song data
-    int count = 0;
+    int index = 0;
     List<float[]> songData;
 
 
     void Awake()
     {
-        GetComponent<AudioSource>().time = 200;
+        GetComponent<AudioSource>().clip = GameManager.GM.AllSongs;
+        GetComponent<AudioSource>().Play();
         songData = GameManager.GM.GetSong();
         triggers = GameManager.GM.GetTriggers();
-    }
-
-    void Update()
-    {
-
-        if (GetComponent<AudioSource>().time + 1 < GetComponent<AudioSource>().clip.length)
-        {
-            WaveTrigger(count);
-            count++;
-        }
-        else
-            ShowScoreBoard();
+        InvokeRepeating("WaveTrigger", 0, 0.03f);
+        GetComponent<AudioSource>().Play();
     }
 
     /// <summary>
@@ -67,7 +65,6 @@ public class SoundConverter : MonoBehaviour {
             powerUp.transform.position = new Vector3(parent.position.x, parent.position.y + 0.1f, parent.position.z);
             powerUpInScene = true;
             powerUp.name = "PowerUp";
-            Debug.Log("power up spawned");
         }
         else
         {
@@ -81,43 +78,70 @@ public class SoundConverter : MonoBehaviour {
     /// </summary>
     /// <param name="wave"></param>
     /// <param name="wavePos"></param>
-    void WaveTrigger(int index)
+    void WaveTrigger()
     {
-        float[] lastFreqs = new float[5];
-        if (index > 0)
-             lastFreqs = songData[index - 1];
-
-        float[] currentFreqs = songData[index];
-        float[] nextFreqs = songData[index + 1];
-
-        for (int i = 0; i < 5; i++)
+        if (GetComponent<AudioSource>().time + 1 < GetComponent<AudioSource>().clip.length)
         {
-            if (currentFreqs[i] > triggers[i])
+            float[] lastFreqs = new float[5];
+            if (index > 0)
+                lastFreqs = songData[index - 1];
+
+            float[] currentFreqs = songData[index];
+
+            float[] nextFreqs = new float[5];
+            if (index < songData.Count)
+                nextFreqs = songData[index + 1];
+
+            for (int i = 0; i < 5; i++)
             {
-                if (lastFreqs[i] > triggers[i] && parents[i] != null)
+                if (currentFreqs[i] > triggers[i])
                 {
-                    SpawnWave(parents[i], i);
-                    break;
+                    if (lastFreqs[i] > triggers[i] && parents[i] != null)
+                    {
+                        SpawnWave(parents[i], i);
+                        break;
+                    }
+                    else if (nextFreqs[i] > triggers[i])
+                    {
+                        SpawnWave(parents[i], i);
+                        break;
+                    }
+                    else if (lastFreqs[i] < triggers[i] && nextFreqs[i] < triggers[i])
+                    {
+                        parents[i] = null;
+                        break;
+                    }
                 }
-                else if (nextFreqs[i] > triggers[i])
-                {
-                    SpawnWave(parents[i], i);
-                    break;
-                }
-                else if (lastFreqs[i] < triggers[i] && nextFreqs[i] < triggers[i])
-                {
+                else
                     parents[i] = null;
-                    break;
-                }
             }
-            else
-                parents[i] = null;
+            index++;
         }
+        else
+        {
+            ShowScoreBoard();
+            SentAnalytics();
+        }
+        
+    }
+
+    void SentAnalytics()
+    {
+        int score = (int)scoreScript.Score;
+        int cochleaAmount = analytics.CochleaAmount;
+        int noteAmount = analytics.NoteAmount;
+        Analytics.CustomEvent("endPlaySession", new Dictionary<string, object>
+        {
+            { "score", score },
+            { "amount of times seen cochlea", cochleaAmount },
+            { "amount of times seen notes", noteAmount }
+
+        });
+        Debug.Log("analytics send");
     }
 
     public void ShowScoreBoard()
     {
-        Debug.Log("spawn scoreboard");
         scoreBoard.SetActive(true);
         spectatorScreens.GetChild(0).gameObject.SetActive(false);
         spectatorScreens.GetChild(1).gameObject.SetActive(true);

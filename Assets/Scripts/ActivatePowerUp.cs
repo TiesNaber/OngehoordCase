@@ -45,9 +45,10 @@ public class ActivatePowerUp : MonoBehaviour {
                 for (int i = 0; i < plugs.Count; i++)
                 {
                     Transform obj = plugs[i].transform;
-                    obj.position = obj.GetComponent<EarPlugBehaviour>().startPos;
+                    obj.GetComponent<Rigidbody>().isKinematic = true;
+                    obj.SetParent(obj.GetComponent<EarPlugBehaviour>().startParent);
+                    obj.localPosition = obj.GetComponent<EarPlugBehaviour>().startPos;
                     obj.rotation = Quaternion.Euler(obj.GetComponent<EarPlugBehaviour>().startRot);
-                    Debug.Log("plug destroyed");
                 }
                 plugs.Clear();
                 selectedSong = true;

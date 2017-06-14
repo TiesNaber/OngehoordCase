@@ -16,6 +16,8 @@ public class ButtonScript : MonoBehaviour {
     AudioSource audio;
     [SerializeField]
     ActivatePowerUp earProtected;
+    [SerializeField]
+    StickyManScript stickyMan;
 
     RaycastHit lookAt;
     public RaycastHit LookAt
@@ -38,14 +40,22 @@ public class ButtonScript : MonoBehaviour {
                 audio.time = 30;
                 audio.Play();
                 audio.enabled = true;
-                GameManager.GM.ArrayIndex = audio.GetComponent<SongIndex>().Index;
+               // stickyMan.LookAtEar = true;
+               // stickyMan.Speed = lookAt.collider.GetComponent<SongIndex>().Speed;
             }
             else if (lookAt.collider.gameObject.tag == "Button" && lookAt.collider.GetComponent<AudioSource>().isPlaying)
             {
                 if (earProtected.SelectedSong)
                 {
+                    GameManager.GM.ArrayIndex = lookAt.collider.GetComponent<SongIndex>().Index;
                     SceneManager.LoadScene("MainGame");
                 }
+            }
+            else if (audio != null)
+            {
+                audio.enabled = false;
+                audio = null;
+                //stickyMan.LookAtEar = false;
             }
         }
         else
@@ -54,6 +64,7 @@ public class ButtonScript : MonoBehaviour {
             {
                 audio.enabled = false;
                 audio = null;
+                //stickyMan.LookAtEar = false;
             } 
         }
 

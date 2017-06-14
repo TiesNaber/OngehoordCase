@@ -27,10 +27,11 @@ public class LoadSong : MonoBehaviour {
         songData = new List<float[]>();
         conn = "URI=file://Assets/Database/MusicDatabase.s3db"; // path to database
         dbconn = (IDbConnection)new SqliteConnection(conn); // database connection
+        InvokeRepeating("UpdateData", 0, 0.03f);
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void UpdateData () {
 
         if (!setupScene && GetComponent<AudioSource>().time < GetComponent<AudioSource>().clip.length - 1 && !storeData)
         {
@@ -62,7 +63,7 @@ public class LoadSong : MonoBehaviour {
         }
         else
         {
-            if (!setupScene)
+            if (!setupScene && !storeData)
             {
                 storeData = true;
                 StoreData();
@@ -85,7 +86,7 @@ public class LoadSong : MonoBehaviour {
             command = new SqliteCommand(sql, (SqliteConnection)dbconn);
             command.ExecuteNonQuery();
 
-            for (int i = 0; i < GetComponent<AudioSource>().clip.samples; i++)
+            for (int i = 0; i < count; i++)
             {
 
                 if (songData[i] != null)
@@ -116,13 +117,13 @@ public class LoadSong : MonoBehaviour {
         CloseConnection();
     }
 
-    public List<float[]> ExtractData(string songName)
+    public List<float[]> ExtractData(string songName, int length)
     {
         List<float[]> musicData = new List<float[]>();
 
         OpenConnection();
 
-        for (int i = 0; i < 7040; i++)
+        for (int i = 0; i < length; i++)
         {
             IDbCommand dbcmd = dbconn.CreateCommand();
             string sql = "SELECT freq1, freq2, freq3, freq4, freq5 " + "FROM " + songName + " WHERE id = '" + i + "'";

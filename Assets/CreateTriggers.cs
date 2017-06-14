@@ -18,7 +18,7 @@ public class CreateTriggers : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		loadData = GetComponent<LoadSong>();
-		songData = loadData.ExtractData(songName);
+		songData = loadData.ExtractData(songName, 7040);
 		Debug.Log(songData.Count);
 		GetTriggers();
 	}

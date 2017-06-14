@@ -116,19 +116,19 @@ public class TextInputManager : MonoBehaviour {
 		if(female)
 		{
 			inputTypeTwo.transform.GetChild(1).gameObject.SetActive(false);
-			Vector3 pos = inputTypeTwo.transform.GetChild(1).position;
-			inputTypeTwo.transform.GetChild(0).position = new Vector3(pos.x - 100, pos.y, pos.z);
+			Vector3 pos = inputTypeTwo.transform.GetChild(0).position;
+			inputTypeTwo.transform.GetChild(0).position = new Vector3(pos.x - 50, pos.y, pos.z);
 		}
 		else
 		{
 			inputTypeTwo.transform.GetChild(0).gameObject.SetActive(false);
-			Vector3 pos = inputTypeTwo.transform.GetChild(0).position;
-			inputTypeTwo.transform.GetChild(1).position = new Vector3(pos.x + 100, pos.y, pos.z);
+			Vector3 pos = inputTypeTwo.transform.GetChild(1).position;
+			inputTypeTwo.transform.GetChild(1).position = new Vector3(pos.x + 50, pos.y, pos.z);
 		}
 		yield return new WaitForSeconds(2);
 
-		GameManager.GM.ArrayIndex = 1;
-		SceneManager.LoadScene("MainGame");
+		//GameManager.GM.ArrayIndex = 0;
+		SceneManager.LoadScene("SongSelection");
 	}
 
 	void CloseConnection()

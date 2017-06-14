@@ -10,4 +10,11 @@ public class SongIndex : MonoBehaviour {
         set { index = value; }
         get { return index; }
     }
+    
+    private float speed;
+    public float Speed
+    {
+        set { speed = value; }
+        get { return speed; }
+    }
 }

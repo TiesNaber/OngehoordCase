@@ -21,6 +21,10 @@ public class HearingDamage : MonoBehaviour {
     Transform[] visualExplodes;
     [SerializeField]
     int[] damagePhase;
+    [SerializeField]
+    int[] lowFilter;
+    [SerializeField]
+    int[] highFilter;
 
     public bool damped;
 
@@ -79,15 +83,11 @@ public class HearingDamage : MonoBehaviour {
                         visualExplodes[freq].GetChild(5 - damagePhase[freq]).GetComponent<ExplodeScript>().enabled = true;
                         damagePhase[freq]--;
                         visuals.freqBools[freq] = false;
+
+                        if (health[freq] == 0)
+                            DistortSound(freq);
                     }
                     break;
-                }
-
-                else if (health[freq] < 0)
-                {
-                    Debug.Log("explode the last part");
-                    visualExplodes[freq].GetChild(5).GetComponent<ExplodeScript>().enabled = true;
-                    health[freq] = 0;
                 }
             }
         }
@@ -103,5 +103,31 @@ public class HearingDamage : MonoBehaviour {
         }
 
         return total;
+    }
+
+    void DistortSound(int freq)
+    {
+        if(freq == 0 || freq == 1)
+        {
+            if(health[0] == 0 && health[1] == 0)
+            {
+                transform.parent.GetComponent<AudioHighPassFilter>().cutoffFrequency = highFilter[1];
+            }
+            else if(health[freq] == 0)
+            {
+                transform.parent.GetComponent<AudioHighPassFilter>().cutoffFrequency = highFilter[0];
+            }
+        }
+        else if(freq == 3 || freq == 4)
+        {
+            if (health[3] == 0 && health[4] == 0)
+            {
+                transform.parent.GetComponent<AudioLowPassFilter>().cutoffFrequency = lowFilter[1];
+            }
+            else if (health[freq] == 0)
+            {
+                transform.parent.GetComponent<AudioLowPassFilter>().cutoffFrequency = lowFilter[0];
+            }
+        }
     }
 }

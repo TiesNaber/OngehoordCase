@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour {
 
     [SerializeField]
     string[] songName;
+    [SerializeField]
+    int[] songLength;
 
     List<List<float[]>> songs;
     public List<float[]> Song
@@ -95,6 +97,16 @@ public class GameManager : MonoBehaviour {
         set { inputPhase = value; }
     }
 
+    [SerializeField]
+    private AudioClip[] allSongs;
+    public AudioClip AllSongs
+    {
+        get
+        {
+            return allSongs[arrayIndex];
+        }
+    }
+
     public bool insert;
     public bool finals;
 
@@ -150,11 +162,11 @@ public class GameManager : MonoBehaviour {
 
         for (int i = 0; i < songName.Length; i++)
         {
-            songs.Add(db.ExtractData(songName[i]));
+            songs.Add(db.ExtractData(songName[i], songLength[i]));
             triggers.Add(db.ExtractTriggerData("Triggers", i));
         }
 
-        FinalSong = db.ExtractData("FinalsSong");
+        FinalSong = db.ExtractData("FinalsSong", 6619);
         FinalTriggers = db.ExtractTriggerData("Triggers", 10);
 
         yield return new WaitForSeconds(1);

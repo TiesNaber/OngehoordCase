@@ -12,6 +12,8 @@ public class SongLoader : MonoBehaviour {
     GameObject cover;
     [SerializeField]
     GameObject coverCircle;
+    [SerializeField]
+    float[] stickySpeed;
 
     object[] songs;
 
@@ -30,7 +32,7 @@ public class SongLoader : MonoBehaviour {
         for (int i = 0; i < songs.Length; i++)
         {
             float angle = i * Mathf.PI * 2 / songs.Length;
-            Vector3 pos = new Vector3( Mathf.Cos(angle), 0.5f, Mathf.Sin(angle)) * radius;
+            Vector3 pos = new Vector3( Mathf.Cos(angle), 0.2f, Mathf.Sin(angle)) * radius;
             GameObject ear = (GameObject)Instantiate(cover, pos, Quaternion.identity);
             ear.transform.LookAt(player);
             ear.transform.parent = coverCircle.transform;
@@ -38,6 +40,7 @@ public class SongLoader : MonoBehaviour {
             ear.GetComponent<AudioSource>().playOnAwake = false;
             ear.GetComponent<AudioSource>().clip = (AudioClip)songs[i];
             ear.GetComponent<SongIndex>().Index = i;
+            ear.GetComponent<SongIndex>().Speed = stickySpeed[i];
         }
     }
 }

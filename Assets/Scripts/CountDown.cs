@@ -7,6 +7,8 @@ public class CountDown : MonoBehaviour {
     int i = 0;
     public GameObject[] countdownObjects;
     public Transform parent;
+    [SerializeField]
+    GameObject gameStart;
 
     void Start()
     {
@@ -19,10 +21,10 @@ public class CountDown : MonoBehaviour {
     }
 
     IEnumerator CountdownTimer()
-    {        
-        GameObject countdownNumbers = (GameObject)Instantiate(countdownObjects[i], parent);
-        countdownNumbers.transform.position = new Vector3(0, 8, 0);
-        countdownNumbers.transform.rotation = Quaternion.Euler(0, -180, 0);
+    {
+        countdownObjects[i].transform.localPosition = new Vector3(-1, 20, -0.5f);
+        countdownObjects[i].transform.rotation = Quaternion.Euler(0, 90, 0);
+        countdownObjects[i].SetActive(true);
         i++;
         yield return new WaitForSeconds(2.0f);
 
@@ -32,9 +34,8 @@ public class CountDown : MonoBehaviour {
         }
         else
         {
-            Debug.Log("Start Game ");
-            //TODO: Call function that starts the game.
-            Destroy(gameObject,1.0f);
+            gameStart.SetActive(true);
+            parent.gameObject.SetActive(false);
         }
     }
 
