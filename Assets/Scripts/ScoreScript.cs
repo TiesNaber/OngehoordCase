@@ -67,7 +67,7 @@ public class ScoreScript : MonoBehaviour {
     {
         if (hearing > 0)
         {
-            hearing = hearingHealth.GetTotalHearingHealth() / 10;
+            hearing = hearingHealth.GetTotalHearingHealth() / 7.5f;
 
             hearingBar.transform.localScale = new Vector3((float)hearing / 100, 0.15f, 1);
             percentage.text = hearing + "%";

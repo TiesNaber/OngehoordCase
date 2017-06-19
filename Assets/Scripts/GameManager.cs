@@ -166,7 +166,7 @@ public class GameManager : MonoBehaviour {
             triggers.Add(db.ExtractTriggerData("Triggers", i));
         }
 
-        FinalSong = db.ExtractData("FinalsSong", 6619);
+        FinalSong = db.ExtractData("FinalSong", 7095);
         FinalTriggers = db.ExtractTriggerData("Triggers", 10);
 
         yield return new WaitForSeconds(1);
