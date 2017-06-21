@@ -54,15 +54,6 @@ public class ControllerScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-        if (Controller.GetPressUp(SteamVR_Controller.ButtonMask.Touchpad))
-        {
-            Debug.Log("Holding down PressUp on the Touchpad");
-            //Resets the position of the plug so you can throw it again when you missed.
-            plug.transform.position = new Vector3(0, 1, 0);
-            plug.GetComponent<Rigidbody>().velocity = Vector3.zero;
-            plug.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-        }
-
         if(holdObject)
         {
             if (Controller.GetTouchUp(SteamVR_Controller.ButtonMask.Trigger))

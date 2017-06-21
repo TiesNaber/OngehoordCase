@@ -52,7 +52,7 @@ public class ScoreScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
         nonPlayerScore.text = score.ToString();
-        playerScore.text = "SCORE\n" + score;
+        //playerScore.text = "SCORE\n" + score;
     }
 
     /// <summary>
@@ -75,7 +75,7 @@ public class ScoreScript : MonoBehaviour {
             hearing = hearingHealth.GetTotalHearingHealth() / 7.5f;
 
             hearingBar.transform.localScale = new Vector3((float)hearing / 100, 0.15f, 1);
-            percentage.text = hearing + "%";
+            percentage.text = Mathf.Round(hearing) + "%";
         }
         
         //Debug.Log((float)hearing / 100);

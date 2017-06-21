@@ -94,10 +94,15 @@ public class SoundConverter : MonoBehaviour {
             if (index > 0)
                 lastFreqs = songData[index - 1];
 
-            float[] currentFreqs = songData[index];
+            float[] currentFreqs = new float[5];
+            if (index < (songData.Count - 1))
+                currentFreqs = songData[index];
+            else
+                return;
+
 
             float[] nextFreqs = new float[5];
-            if (index < songData.Count)
+            if (index < (songData.Count - 2))
                 nextFreqs = songData[index + 1];
 
             for (int i = 0; i < 5; i++)

@@ -127,8 +127,8 @@ public class TextInputManager : MonoBehaviour {
 		}
 		yield return new WaitForSeconds(2);
 
-		//GameManager.GM.ArrayIndex = 0;
-		SceneManager.LoadScene("SongSelection");
+		GameManager.GM.ArrayIndex = 0;
+		SceneManager.LoadScene("MainGame");
 	}
 
 	void CloseConnection()

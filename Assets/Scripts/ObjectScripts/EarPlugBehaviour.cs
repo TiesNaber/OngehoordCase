@@ -37,8 +37,12 @@ public class EarPlugBehaviour : MonoBehaviour {
     IEnumerator ResetPos()
     {
         yield return new WaitForSeconds(1);
-        transform.SetParent(startParent);
-        transform.localPosition = startPos;
-        transform.rotation = Quaternion.Euler(startRot);
+        if (transform.parent == null)
+        {
+            GetComponent<Rigidbody>().isKinematic = true;
+            transform.SetParent(startParent);
+            transform.localPosition = startPos;
+            transform.rotation = Quaternion.Euler(startRot);
+        }
     }
 }
