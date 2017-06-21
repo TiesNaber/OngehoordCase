@@ -35,7 +35,7 @@ public class SongSelectionInfo : MonoBehaviour {
                     audio.clip = infoAudio[count];
                     audio.PlayDelayed(0.5f);
                     searchButton = false;
-                    StartCoroutine( Delay(false, 3));
+                    StartCoroutine( Delay(false, 12));
                 }
             }
         }

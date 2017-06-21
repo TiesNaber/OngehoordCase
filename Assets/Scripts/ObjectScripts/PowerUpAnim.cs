@@ -47,8 +47,11 @@ public class PowerUpAnim : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-        if(powerUpActivated)
+        if (powerUpActivated)
+        {
             Move();
+            GetComponent<Renderer>().enabled = true;
+        }
 
         if(reached)
         {
@@ -68,8 +71,8 @@ public class PowerUpAnim : MonoBehaviour {
         transform.rotation = startRot;
 
         gameManager.GetComponent<SoundConverter>().enabled = true;
-        gameManager.transform.GetChild(0).GetComponent<HearingDamage>().damped = false;
-        
+        GetComponent<Renderer>().enabled = false;
+
 
     }
 }

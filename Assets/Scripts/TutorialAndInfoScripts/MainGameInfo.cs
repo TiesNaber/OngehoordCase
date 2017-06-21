@@ -21,11 +21,18 @@ public class MainGameInfo : MonoBehaviour {
 
     // Use this for initialization
     void Start() {
-        audio = GetComponent<AudioSource>();
-        audio.clip = infoAudio[count];
-        audio.PlayDelayed(1);
-        count++;
-        StartCoroutine(PlayNext(12, true));
+        if (!GameManager.GM.finals)
+        {
+            audio = GetComponent<AudioSource>();
+            audio.clip = infoAudio[count];
+            audio.PlayDelayed(1);
+            count++;
+            StartCoroutine(PlayNext(12, true));
+        }
+        else
+        {
+            StartCountDown();
+        }
 
     }
 

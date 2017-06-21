@@ -46,8 +46,7 @@ public class Movement : MonoBehaviour {
 				transform.GetChild(0).parent = null;
 			}
 			GameObject particle = (GameObject)Instantiate(particles, transform.position, Quaternion.Euler(0, 90, 0));
-			particle.GetComponent<ParticleSystem>().startColor = GetComponent<MeshRenderer>().material.color;
-			col.GetComponent<ControllerScript>().HapticFeedback();
+			col.GetComponent<ControllerScript>().HaptickActivate(1);
 			sceneManager.GetComponent<ScoreScript>().UpdateScore(1);
 			col.transform.GetChild(1).GetChild(0).GetComponent<MeshRenderer>().material.color = GetComponent<MeshRenderer>().material.color;
 			Destroy(gameObject);

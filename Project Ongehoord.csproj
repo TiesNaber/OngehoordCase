@@ -187,12 +187,13 @@
     <Compile Include="Assets\Import\SteamVR\Scripts\SteamVR_TrackedObject.cs" />
     <Compile Include="Assets\Import\SteamVR\Scripts\SteamVR_UpdatePoses.cs" />
     <Compile Include="Assets\Import\SteamVR\Scripts\SteamVR_Utils.cs" />
-    <Compile Include="Assets\Scripts\DatabaseScripts\ClassHighscores.cs" />
     <Compile Include="Assets\Scripts\DatabaseScripts\CreateTriggers.cs" />
     <Compile Include="Assets\Scripts\DatabaseScripts\LoadSong.cs" />
     <Compile Include="Assets\Scripts\DatabaseScripts\TextInputManager.cs" />
-    <Compile Include="Assets\Scripts\FinalsManager.cs" />
-    <Compile Include="Assets\Scripts\GameManager.cs" />
+    <Compile Include="Assets\Scripts\DatabaseScripts\TopThreeScores.cs" />
+    <Compile Include="Assets\Scripts\Managers\FinalsManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\GameManager.cs" />
+    <Compile Include="Assets\Scripts\Managers\SoundConverter.cs" />
     <Compile Include="Assets\Scripts\ObjectScripts\ActivatePowerUp.cs" />
     <Compile Include="Assets\Scripts\ObjectScripts\BeltMovement.cs" />
     <Compile Include="Assets\Scripts\ObjectScripts\ButtonScript.cs" />
@@ -214,18 +215,16 @@
     <Compile Include="Assets\Scripts\Other\MyFinalScore.cs" />
     <Compile Include="Assets\Scripts\Other\SceneSwitching.cs" />
     <Compile Include="Assets\Scripts\Other\SwitchState.cs" />
-    <Compile Include="Assets\Scripts\ScoreScript.cs" />
-    <Compile Include="Assets\Scripts\SoundConverter.cs" />
     <Compile Include="Assets\Scripts\TutorialAndInfoScripts\CountDown.cs" />
     <Compile Include="Assets\Scripts\TutorialAndInfoScripts\FinalScoreBoard.cs" />
     <Compile Include="Assets\Scripts\TutorialAndInfoScripts\HolsterScript.cs" />
     <Compile Include="Assets\Scripts\TutorialAndInfoScripts\MainGameInfo.cs" />
+    <Compile Include="Assets\Scripts\TutorialAndInfoScripts\ScoreScript.cs" />
     <Compile Include="Assets\Scripts\TutorialAndInfoScripts\ScoreSpectators.cs" />
     <Compile Include="Assets\Scripts\TutorialAndInfoScripts\SetTutorialLight.cs" />
     <Compile Include="Assets\Scripts\TutorialAndInfoScripts\SongLoader.cs" />
     <Compile Include="Assets\Scripts\TutorialAndInfoScripts\SongSelectionInfo.cs" />
     <Compile Include="Assets\Scripts\TutorialAndInfoScripts\StickyManScript.cs" />
-    <Compile Include="Assets\TopThreeScores.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Import\SteamVR\InteractionSystem\Core\Shaders\SeeThru.shader" />

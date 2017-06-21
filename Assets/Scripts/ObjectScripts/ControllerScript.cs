@@ -31,10 +31,19 @@ public class ControllerScript : MonoBehaviour {
         trackedObj = GetComponent<SteamVR_TrackedObject>();
     }
 
-    public void HapticFeedback()
+    public void HaptickActivate(int amount)
     {
-        Debug.Log("Vibrate");
-        Controller.TriggerHapticPulse(3999, EVRButtonId.k_EButton_Axis0);
+        StartCoroutine(HapticFeedback(amount));
+    }
+
+    IEnumerator HapticFeedback(int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            yield return new WaitForSeconds(0.01f);
+            Controller.TriggerHapticPulse(1500, EVRButtonId.k_EButton_Axis0);
+        }
+        
     }
 
     public bool TriggerDown()
@@ -77,12 +86,15 @@ public class ControllerScript : MonoBehaviour {
         {
             holsterScript.SetPlug(col.gameObject);
             col.GetComponent<EarPlugBehaviour>().holstered = true;
+            HaptickActivate(10);
+           
         }
 
         if(col.tag == "InfoPlug")
         {
             mainInfo.LastSound();
             col.gameObject.SetActive(false);
+            HaptickActivate(10);
         }
 
         if (col.tag == "Plug" && !holdObject && col.GetComponent<EarPlugBehaviour>().holstered)
@@ -97,7 +109,8 @@ public class ControllerScript : MonoBehaviour {
                 col.transform.localScale = new Vector3(0.6f, 0.6f, 0.6f);
                 grabbedObject = col;
                 holdObject = true;
-            }            
+            }
+            HaptickActivate(10);
         }
     }
 
